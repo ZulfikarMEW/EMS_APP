@@ -1,0 +1,369 @@
+<div class="container-fluid">
+  <app-page-title title="{{ 'HEADER.CONTENT.BONUSADJUSTMENT' | translate }}" [breadcrumbItems]="breadCrumbItems">
+  </app-page-title>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body bg-info bg-soft">
+          <div class="row">
+            <div class="col-sm-10">
+              <h4 class="card-title">Filter</h4>
+            </div>
+            <div class="col-sm-2 text-sm-end">
+              <div class="button-items">
+                <button type="button" class="btn btn-outline-info btn-sm" (click)="isCollapsed = !isCollapsed">
+                  <i class="bx bx-filter font-size-16"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="collapse" id="collapseExample" [ngbCollapse]="isCollapsed">
+            <div class="bg-info bg-soft mb-0">
+              <!-- <app-personal-data-filter (outParams)="getParams($event)"></app-personal-data-filter> -->
+
+              <div class="card">
+                <div class="card-body bg-info bg-soft">
+                  <!--<h4 class="card-title mb-4">Search Employee</h4> -->
+
+                  <form class="form-horizontal" [formGroup]="yearForm" (ngSubmit)="fetchData()">
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label for="Year">Year</label>
+                          <input type="search" class="form-control" formControlName="Year" id="Year" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="text-sm-end">
+                      <div class="mb-3">
+                        <div>
+                          <button type="submit" class="btn btn-dark w-md">Search</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-10">
+              <h4 class="card-title">
+                {{ "HEADER.CONTENT.BONUSADJUSTMENT" | translate }}
+              </h4>
+            </div>
+            <div class="col-sm-2 text-sm-end">
+              <!-- <button
+                type="button"
+                class="btn btn-success btn-rounded mb-2 me-2"
+                data-target="#dataModal"
+                data-toggle="modal"
+                (click)="openModal(dataModal)"
+              >
+                <i class="fas fa-plus font-size-64 align-left mr-1"></i>
+                {{ "HEADER.CONTENT.ADDNEW" | translate }}
+              </button> -->
+            </div>
+
+            <br />
+
+            <div class="col-sm-12">
+              <ngb-progressbar *ngIf="isLoading" [value]="100" [striped]="true" [animated]="true" height="4px"
+                type="info"></ngb-progressbar>
+            </div>
+          </div>
+          <!-- <p class="card-title-desc">
+            Add <code>.table-bordered</code> for borders on all sides of the
+            table and cells.
+          </p> -->
+
+          <div class="table-responsive">
+            <table class="table table-bordered mb-0">
+              <thead>
+                <tr>
+                  <th>
+                    #
+                    <!-- <div class="form-check font-size-16 align-middle">
+                      <input class="form-check-input" type="checkbox" #inputElement
+                        (change)="check($event, inputElement, null, -1)" [name]="-1" [id]="-1"
+                        [checked]="isCheckedMap[-1]" />
+                      <label class="form-check-label" for=inputElement></label>
+                    </div> -->
+                  </th>
+                  <th style="width: 1%; white-space: nowrap">
+                    {{ "HEADER.CONTENT.FILENO" | translate }}
+                  </th>
+                  <th>{{ "HEADER.CONTENT.NAME" | translate }}</th>
+                  <th>{{ "HEADER.CONTENT.CIVILID" | translate }}</th>
+                  <th>{{ "HEADER.CONTENT.GRADE" | translate }}</th>
+                  <th>{{ "HEADER.CONTENT.PERCENTAGE" | translate }}</th>
+                  <th>{{ "HEADER.CONTENT.AMOUNT" | translate }}</th>
+                  <th></th>
+                  <!-- <th><button type="button" class="btn btn-danger mb-2 me-2" *ngIf="checkedItems.length>0"
+                      (click)="updateAllMarked()">
+                      <i class="fas fa-bolt font-size-64 align-left mr-1"></i>
+                    </button></th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of dataList; let i = index; trackBy:trackByFn">
+                  <td style="width: 20px;">
+                    {{i+1}}
+                    <!-- <div class="form-check font-size-16 align-middle">
+                      <input class="form-check-input" type="checkbox" #inputElement
+                        (change)="check($event, inputElement, item, i)" [name]="i" [id]="i"
+                        [checked]="isCheckedMap[i]" />
+                      <label class="form-check-label" for=inputElement></label>
+                    </div> -->
+                  </td>
+
+                  <td>
+                    {{ item.FileNo }}
+                  </td>
+                  <td style="font-size: medium; font-weight: bold">
+                    {{ item.Name }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.CivilIdNo }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap;">
+                    {{ item.MasterAnnualEvaluation }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap; text-align: right;">
+                    {{ item.Percentage }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap; text-align: right;">
+                    {{ item.Amount| number:"1.3-3" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="text-sm-end">
+                      <ul class="list-inline font-size-15 contact-links mb-0">
+                        <li class="list-inline-item px-2">
+                          <!-- <button
+                                              type="button"
+                                              class="btn btn-success btn-rounded mb-2 me-2"
+                                              data-target="#dataModal"
+                                              data-toggle="modal"
+                                              (click)="openModal(dataModal)"
+                                            >
+                                              <i
+                                                class="fas fa-plus font-size-64 align-left mr-1"
+                                              ></i>
+                                              {{ "HEADER.CONTENT.ADDNEW" | translate }}
+                                            </button> -->
+                          <!-- <a
+                                              class="btn btn-rounded btn-info"
+                                              href="javascript:void(0)"
+                                              ngbTooltip="{{
+                                                'HEADER.CONTENT.ADDNEW' | translate
+                                              }}"
+                                              (click)="openHistoryModal(historyModal, item)"
+                                              ><i
+                                                class="fas fa-list-ul text-white font-size-64"
+                                              ></i
+                                            ></a> -->
+                          <!-- </li>
+                                        </ul>
+                                      </div>
+                                    </td>
+                                    <td style="width: 1%; white-space: nowrap">
+                                      <div class="text-sm-end">
+                                        <ul class="list-inline font-size-15 contact-links mb-0">
+                                          <li class="list-inline-item px-2"> -->
+                          <a class="btn btn-rounded btn-success" href="javascript:void(0)" ngbTooltip="{{
+                                                'HEADER.CONTENT.ADDNEW' | translate
+                                              }}" (click)="openModal(dataModal, item)"><i
+                              class="fas fa-plus text-white font-size-64"></i></a>
+                          <a class="btn btn-rounded btn-info" href="javascript:void(0)" ngbTooltip="{{
+                                                'HEADER.CONTENT.HISTORY' | translate
+                                              }}" (click)="openHistoryModal(historyModal, item)"><i
+                              class="fas fa-list-ul text-white font-size-64"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <!--<td style="width: 1%; white-space: nowrap">
+                     <div class="text-sm-end">
+                      <ul class="list-inline font-size-15 contact-links mb-0">
+                        <li class="list-inline-item px-2">
+                          <a class="btn btn-rounded btn-success" href="javascript:void(0)" ngbTooltip="{{
+                              'HEADER.CONTENT.ADDNEW' | translate
+                            }}" (click)="onSelected(item)"><i class="fas fa-plus text-white font-size-64"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+            <!-- {{checkedItems|json}} -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #dataModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">
+        {{ "HEADER.CONTENT.BONUSADJUSTMENT" | translate }}
+      </h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-hidden="true"></button>
+    </div>
+    <div class="modal-body">
+      <form autocomplete="off" class="form-horizontal" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="mb-1">
+                <label for="MasterAnnualEvaluationId">{{
+                  "HEADER.CONTENT.AMOUNT" | translate
+                  }}</label>
+
+                <!-- <ng-select
+                  id="MasterAnnualEvaluationId"
+                  formControlName="MasterAnnualEvaluationId"
+                  (click)="fetchMasterData()"
+                >
+                  <ng-option *ngFor="let row of masterData" [value]="row.Id">{{
+                    row.Description
+                  }}</ng-option>
+                </ng-select> -->
+
+                <input type="text" class="form-control form-control-sm" id="Amount" formControlName="Amount" [ngClass]="{
+                                    'is-invalid': formSubmit && f.Amount.errors
+                                  }" />
+
+                <div *ngIf="formSubmit && f.Amount.errors" class="invalid-feedback">
+                  <span *ngIf="f.Amount.errors.required">This field is required.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-md-2">
+              <div class="mb-1">
+                <label for="Year">{{
+                  "HEADER.CONTENT.YEAR" | translate
+                }}</label>
+                <input
+                  type="text"
+                  (keypress)="keyPressNumbers($event)"
+                  maxlength="4"
+                  min="0"
+                  class="form-control form-control-sm"
+                  id="Year"
+                  formControlName="Year"
+                  [ngClass]="{
+                    'is-invalid': formSubmit && f.Year.errors
+                  }"
+                />
+                <div
+                  *ngIf="formSubmit && f.Year.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="f.Year.errors.required"
+                    >This field is required.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="mb-1">
+                <label for="Percentage">%</label>
+                <input
+                  type="text"
+                  (keypress)="keyPressNumbers($event)"
+                  maxlength="3"
+                  max="100"
+                  min="0"
+                  class="form-control form-control-sm"
+                  id="Percentage"
+                  formControlName="Percentage"
+                  [ngClass]="{
+                    'is-invalid': formSubmit && f.Percentage.errors
+                  }"
+                />
+                <div
+                  *ngIf="formSubmit && f.Percentage.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="f.Percentage.errors.required"
+                    >This field is required.</span
+                  >
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="mb-1">
+                <label for="Note">{{
+                  "HEADER.CONTENT.NOTES" | translate
+                  }}</label>
+                <textarea id="Note" class="form-control" rows="3" formControlName="Note">
+                </textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" [disabled]="formSubmit" class="btn btn-primary w-md">
+            {{ "HEADER.CONTENT.SAVE" | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+
+  <ng-template #historyModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">
+        {{ "HEADER.CONTENT.HISTORY" | translate }}
+      </h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-hidden="true"></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <ngx-simplebar style="height: 280px">
+            <ul class="verti-timeline list-unstyled">
+              <li class="event-list" *ngFor="let item of historyDataList; let i = index; trackBy: trackByFn">
+                <div class="event-timeline-dot">
+                  <i class="bx bx-right-arrow-circle font-size-18"></i>
+                </div>
+                <div class="media">
+                  <h5 class="font-size-14">
+                    {{ item.Year }}
+                    <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i>
+                  </h5>
+                  <div class="media-body">
+                    <div>
+                      <h5 class="font-size-14" [class]="{'text-success': item.Amount>=0, 'text-danger': item.Amount<0}">
+                        {{ item.Type }} :
+                        {{ item.Amount }}
+                      </h5>
+                      <p>{{item.Note}}</p>
+                    </div>
+                  </div>
+                  <!-- <a class="btn btn-rounded btn-sm btn-danger" href="javascript:void(0)"
+                                      ngbTooltip="{{ 'HEADER.CONTENT.REMOVE' | translate }}" (click)="removeHistory(item)"><i
+                                        class="bx bx-x font-size-16 align-middle"></i></a> -->
+                </div>
+              </li>
+            </ul>
+          </ngx-simplebar>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

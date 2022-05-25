@@ -1,0 +1,330 @@
+<div class="container-fluid" *ngIf="hasViewAccess">
+  <app-page-title
+    title="{{ 'HEADER.CONTENT.LEAVERETURN' | translate }}"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="card">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <!-- <div class="text-sm-end">
+            <button
+              type="button"
+              class="btn btn-success btn-rounded mb-2 me-2"
+              data-target="#newDataModal"
+              data-toggle="modal"
+              (click)="openModal(newDataModal)"
+            >
+              <i class="fas fa-plus font-size-64 align-left mr-1"></i> {{ 'HEADER.CONTENT.ADDNEW' | translate }}
+            </button>
+          </div> -->
+          <div class="table-responsive">
+            <table class="table table-nowrap table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.REQUESTEDBY" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.DATEREQUESTED" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.LEAVETYPE" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.STARTDATE" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.ENDDATE" | translate }}
+                  </th>
+                  <th scope="col">{{ "HEADER.CONTENT.DAYS" | translate }}</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of leaveData; let i = index">
+                  <th scope="row" style="width: 1%; white-space: nowrap">
+                    <div class="avatar-xs">
+                      <span class="avatar-title rounded-circle">
+                        {{ i + 1 }}
+                      </span>
+                    </div>
+                  </th>
+                  <td>{{ item.RequestedBy }}</td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.RequestTime | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.LeaveType }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.LeaveStarted | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.LeaveEnded | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td
+                    style="width: 1%; white-space: nowrap"
+                    class="text-sm-end"
+                  >
+                    {{ item.NoOfDays | number }}
+                  </td>
+                  <td style="width: 15%" class="text-sm-end">
+                    <div class="row text-sm-end">
+                      <!-- <div class="col-sm-6">
+                        <span [ngClass]="statusClass(item.Status)">
+                          {{ item.Status }}</span
+                        >
+                      </div> -->
+                      <div class="col-sm-6 button-items text-sm-end">
+                        <button
+                          type="button"
+                          class="btn btn-success btn-sm"
+                          (click)="openModal(newDataModal, item)"
+                        >
+                          <i class="bx bx-check"></i>
+                        </button>
+                      </div>
+
+                      <!-- <div class="col-sm-6 button-items text-sm-end">
+                        <button
+                          type="button"
+                          class="btn btn-danger btn-sm"
+                          (click)="cancelRequest(item)"
+                        >
+                          <i class="bx bx-x"></i>
+                        </button>
+                      </div> -->
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #newDataModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">{{ modalTitle }}</h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="modal.dismiss('Cross click')"
+        aria-hidden="true"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <form
+            autocomplete="off"
+            class="form-horizontal"
+            [formGroup]="leaveForm"
+            (ngSubmit)="onSubmit()"
+          >
+            <div class="container-fluid">
+              <div class="row">
+                <div class="mb-2">
+                  <div hidden></div>
+                </div>
+                <div class="col-sm-8">
+                  <label for="datepicker">Date Returned</label>
+                  <input
+                    class="form-control"
+                    type="date"
+                    id="datepicker"
+                    formControlName="ReturnedDate"
+                  />
+                </div>
+                <div class="col-sm-2"></div>
+
+                <br />
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary w-md">
+                {{ "HEADER.CONTENT.SUBMIT" | translate }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<!-- <app-loader></app-loader> -->
+
+<!-- <div class="container-fluid">
+  <app-page-title
+    title="Calendar"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="app-calendar">
+          <full-calendar [options]="calendarOptions"></full-calendar>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- {{ 'HEADER.CONTENT.ADDNEW' | translate }} Event MODAL -->
+<!-- <ng-template #modalShow let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-title">{{ 'HEADER.CONTENT.ADDNEW' | translate }} Event</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="closeEventModal()"
+    ></button>
+  </div>
+  <div class="modal-body p-4">
+    <form (ngSubmit)="saveEvent()" [formGroup]="formData">
+      <div class="row">
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="control-label">Event Name</label>
+            <input
+              class="form-control"
+              placeholder="Insert Event Name"
+              type="text"
+              name="title"
+              formControlName="title"
+              [ngClass]="{ 'is-invalid': submitted && form.title.errors }"
+            />
+            <div
+              *ngIf="submitted && form.title.errors"
+              class="invalid-feedback"
+            >
+              <span *ngIf="form.title.errors.required"
+                >This value is required.</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="control-label">Category</label>
+            <select
+              class="form-control"
+              name="category"
+              formControlName="category"
+              [ngClass]="{ 'is-invalid': submitted && form.category.errors }"
+            >
+              <option
+                *ngFor="let option of category"
+                value="{{ option.value }}"
+              >
+                {{ option.name }}
+              </option>
+            </select>
+            <div
+              *ngIf="submitted && form.category.errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="form.category.errors.required">
+                This value is required
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-end mt-2">
+        <button
+          type="button"
+          class="btn btn-light me-1"
+          (click)="closeEventModal()"
+        >
+          Close
+        </button>
+        <button type="{{ 'HEADER.CONTENT.SUBMIT' | translate }}" class="btn btn-success" id="btn-save-event">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template> -->
+<!-- end modal-->
+
+<!-- Edit event modal -->
+<!-- <ng-template #editmodalShow let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Edit Event</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-hidden="true"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body p-4">
+    <form [formGroup]="formEditData" (ngSubmit)="editEventSave()">
+      <div class="row">
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="control-label">Event name</label>
+            <input
+              class="form-control"
+              placeholder="Insert Event Name"
+              type="text"
+              name="editTitle"
+              formControlName="editTitle"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="control-label">Event category</label>
+            <select
+              class="form-control"
+              name="ecategory"
+              formControlName="editCategory"
+              required
+            >
+              <option
+                *ngFor="let option of category"
+                value="{{ option.value }}"
+              >
+                {{ option.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-6">
+          <button
+            type="button"
+            class="btn btn-danger delete-event ms-1"
+            (click)="confirm()"
+          >
+            Delete
+          </button>
+        </div>
+        <div class="col-6 text-end">
+          <button
+            type="button"
+            class="btn btn-light"
+            (click)="modal.dismiss('Close')"
+          >
+            Close
+          </button>
+          <button type="{{ 'HEADER.CONTENT.SUBMIT' | translate }}" class="btn btn-success ms-1">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template> -->

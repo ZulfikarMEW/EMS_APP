@@ -1,0 +1,77 @@
+<!-- <div class="container-fluid">
+  <div class="row">
+<div class="col-lg-12">-->
+<div class="card">
+  <div class="card-body bg-info bg-soft">
+    <!--<h4 class="card-title mb-4">Search Employee</h4> -->
+
+    <form class="form-horizontal" [formGroup]="filterForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="formrow-inputName">{{ "HEADER.CONTENT.NAME" | translate }}</label>
+            <input type="search" class="form-control" formControlName="Name" id="formrow-inputName" />
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="mb-3">
+            <label for="formrow-inputCivilId">{{ "HEADER.CONTENT.CIVILID" | translate }}</label>
+            <input type="search" class="form-control" formControlName="CivilIdNo" id="formrow-inputCivilId"
+              maxlength="12" />
+          </div>
+        </div>
+
+        <div class="col-lg-2">
+          <div class="mb-3">
+            <label for="formrow-inputFileNo">{{ "HEADER.CONTENT.FILENO" | translate }}</label>
+            <input type="search" class="form-control" formControlName="FileNo" id="formrow-inputFileNo" maxlength="5" />
+          </div>
+        </div>
+
+        <!-- <div class="col-sm-2">
+          <div class="button-items">
+            <br />
+
+            <button
+              type="button"
+              class="btn btn-outline-info btn-sm"
+              (click)="isCollapse = !isCollapse"
+            >
+              More Filter
+            </button>
+          </div>
+        </div> -->
+      </div>
+
+      <div class="collapse" id="collapseExample" [ngbCollapse]="!isCollapse">
+        <div class="mb-0">
+          <div class="row">
+            <div class="col-lg-2">
+              <div class="mb-3">
+                <label for="PhoneNo">PhoneNo</label>
+                <input type="search" class="form-control" formControlName="PhoneNo" id="PhoneNo" />
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="mb-3">
+                <label for="ArticleNo">ArticleNo</label>
+                <input type="search" class="form-control" formControlName="ArticleNo" id="ArticleNo" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-sm-end">
+        <div class="mb-3">
+          <div>
+            <button type="submit" class="btn btn-dark w-md">Search</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--</div>
+  </div>
+</div> -->

@@ -1,0 +1,34 @@
+// @import "compass/css3";
+
+// @mixin column-fill($value) {
+//   @include experimental(column-fill, $value, webkit, moz, not o, not ms, not khtml);
+// }
+
+// body,
+// html {
+//   height: 100%;
+// }
+
+// ul.one {
+//   height: 40%;
+//   @include columns(10em);
+//   @include column-fill(auto);
+// }
+
+// // ul.two {
+// //   $flex-wrap-required: true;
+// //   @include display-flex;
+// //   @include flex-flow(column wrap);
+// //   //@include align-items(flex-start);
+// //   height: 40%;
+// // }
+
+// li {
+//   border: 1px solid;
+// }
+
+ul.one {
+  height: 25%;
+  columns: 20em;
+  column-fill: auto;
+}

@@ -1,0 +1,164 @@
+<div class="container-fluid p-0">
+  <div class="row g-0">
+    <div class="col-xl-9">
+      <div class="auth-full-bg pt-lg-5 p-4">
+        <div class="w-100">
+          <div class="bg-overlay"></div>
+          <div class="d-flex h-100 flex-column">
+            <div class="p-4 mt-auto">
+              <div class="row justify-content-center">
+                <div class="col-lg-7">
+                  <div class="text-center">
+                    <h4 class="mb-3">
+                      <span class="text-primary"
+                        ><p>
+                          © {{ year }} Ministry of Electricity and Water
+                        </p></span
+                      >
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3">
+      <div class="auth-full-page-content p-md-5 p-4">
+        <div class="w-100">
+          <div class="d-flex flex-column h-100">
+            <div class="mb-4 mb-md-5"></div>
+            <div class="my-auto">
+              <div>
+                <h5 class="text-primary">Welcome Back !</h5>
+                <p class="text-muted">Sign in to continue to EMS.</p>
+              </div>
+
+              <div class="mt-4">
+                <form
+                  class="form-horizontal"
+                  [formGroup]="loginForm"
+                  (ngSubmit)="onSubmit()"
+                >
+                  <ngb-alert
+                    type="danger"
+                    *ngIf="error"
+                    [dismissible]="false"
+                    >{{ error }}</ngb-alert
+                  >
+
+                  <div class="mb-3">
+                    <label for="email">Email</label>
+                    <input
+                      type="email"
+                      formControlName="email"
+                      class="form-control"
+                      id="email"
+                      placeholder="Email"
+                      [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+                    />
+                    <div
+                      *ngIf="submitted && f.email.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.email.errors.required">
+                        Email is required
+                      </div>
+                      <div *ngIf="f.email.errors.email">
+                        Email must be a valid email address
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="password">Password</label>
+                    <div class="input-group auth-pass-inputgroup">
+                      <input
+                        [type]="showPassword ? 'text' : 'password'"
+                        class="form-control"
+                        formControlName="password"
+                        placeholder="Enter password"
+                        [ngClass]="{
+                          'is-invalid': submitted && f.password.errors
+                        }"
+                        aria-label="Password"
+                        aria-describedby="password-addon"
+                      />
+
+                      <button
+                        class="btn btn-light ms-0"
+                        type="button"
+                        id="password-addon"
+                        (click)="showPassword = !showPassword"
+                      >
+                        <i class="mdi mdi-eye-outline"></i>
+                      </button>
+                      <div
+                        *ngIf="submitted && f.password.errors"
+                        class="invalid-feedback"
+                      >
+                        <span *ngIf="f.password.errors.required"
+                          >Password is required</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="remember-check">
+                  <label class="form-check-label" for="remember-check">
+                    Remember me
+                  </label>
+                </div> -->
+
+                  <div class="mt-3 d-grid">
+                    <button class="btn btn-primary" type="submit">
+                      Log In
+                    </button>
+                  </div>
+                  <br />
+                  <div class="mt-4 text-center">
+                    <h5 class="font-size-14 mb-3">
+                      {{ errorMessage }}
+                    </h5>
+                  </div>
+                  <!-- <div class="mt-4 text-center">
+                  <h5 class="font-size-14 mb-3">Sign in with</h5>
+
+                  <ul class="list-inline">
+                    <li class="list-inline-item">
+                      <a href="javascript::void()" class="social-list-item bg-primary text-white border-primary">
+                        <i class="mdi mdi-facebook"></i>
+                      </a>
+                    </li>
+                    <li class="list-inline-item">
+                      <a href="javascript::void()" class="social-list-item bg-info text-white border-info">
+                        <i class="mdi mdi-twitter"></i>
+                      </a>
+                    </li>
+                    <li class="list-inline-item">
+                      <a href="javascript::void()" class="social-list-item bg-danger text-white border-danger">
+                        <i class="mdi mdi-google"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div> -->
+                  <div class="mt-4 text-center">
+                    <a routerLink="/account/reset-password" class="text-muted"
+                      ><i class="mdi mdi-lock mr-1"></i> Forgot your
+                      password?</a
+                    >
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- end page -->

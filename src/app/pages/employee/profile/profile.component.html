@@ -1,0 +1,663 @@
+<div class="container-fluid">
+  <app-page-title
+    title="{{ 'HEADER.CONTENT.MYPROFILE' | translate }}"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-xl-4">
+          <div class="card overflow-hidden">
+            <div class="bg-soft bg-primary">
+              <div class="row">
+                <div class="col-7">
+                  <div class="text-primary p-3"></div>
+                </div>
+                <div class="col-5 align-self-end"></div>
+              </div>
+            </div>
+            <div class="card-body pt-0">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="avatar-md profile-user-wid mb-4">
+                    <img
+                      src="assets/images/users/avatar.png"
+                      alt=""
+                      class="img-thumbnail rounded-circle"
+                    />
+                  </div>
+                  <h5 class="font-size-15 text-truncate">
+                    {{ selectedEmployee.Name }}
+                  </h5>
+                  <!-- <p class="text-muted mb-0 text-truncate">{{selectedEmployee.Description}}</p> -->
+                </div>
+
+                <div class="col-sm-8">
+                  <div class="pt-4">
+                    <div class="row">
+                      <div class="col-6">
+                        <h5 class="font-size-15">
+                          {{
+                            userLeaveHeader.LastTakenDate | date: "dd/MM/yyyy"
+                          }}
+                        </h5>
+                        <p class="text-muted mb-0">
+                          {{ "HEADER.CONTENT.LASTTAKENDATE" | translate }}
+                        </p>
+                      </div>
+                      <div class="col-6">
+                        <h5 class="font-size-15">
+                          {{
+                            userLeaveHeader.LastReturnedDate
+                              | date: "dd/MM/yyyy"
+                          }}
+                        </h5>
+                        <p class="text-muted mb-0">
+                          Last {{ "HEADER.CONTENT.RETURNEDDATE" | translate }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <a
+                        href="javascript: void(0);"
+                        class="btn btn-primary btn-sm"
+                        >View Profile <i class="mdi mdi-arrow-right ms-1"></i
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title mb-4">
+                {{ "HEADER.CONTENT.PERSONALINFORMATION" | translate }}
+              </h4>
+
+              <p class="text-muted mb-4">
+                {{ selectedEmployee.Description }}
+              </p>
+              <div class="table-responsive">
+                <table class="table table-nowrap mb-0">
+                  <tbody>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.FILENO" | translate }} :
+                      </th>
+                      <td>{{ selectedEmployee.FileNo }}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.CIVILID" | translate }} :
+                      </th>
+                      <td>{{ selectedEmployee.CivilId }}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.CONTACTNO" | translate }} :
+                      </th>
+                      <td>
+                        {{ selectedEmployee.Mobile }}<br />
+                        {{ selectedEmployee.HomePhone }}<br />
+                        {{ selectedEmployee.OfficePhone }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.EMAIL" | translate }} :
+                      </th>
+                      <td>{{ selectedEmployee.Email }}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.ADDRESS" | translate }} :
+                      </th>
+                      <td>
+                        {{ selectedEmployee.Address }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- end card -->
+
+          <!-- end card -->
+        </div>
+
+        <div class="col-xl-8">
+          <div class="row">
+            <div *ngFor="let stat of statData" class="col-md-4">
+              <app-stat
+                [title]="stat.title"
+                [value]="stat.value"
+                [icon]="stat.icon"
+              ></app-stat>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="row mb-2">
+                <div class="col-4">
+                  <h4 class="card-title mb-2">
+                    {{ "HEADER.CONTENT.LEAVEBALANCE" | translate }}
+                  </h4>
+                </div>
+                <div class="col-8">
+                  <a
+                    *ngIf="!editBalanceValue"
+                    href="javascript: void(0);"
+                    (click)="editBalance()"
+                    class="btn btn-primary btn-sm"
+                    >Edit {{ "HEADER.CONTENT.LEAVEBALANCE" | translate }}</a
+                  >
+
+                  <a
+                    *ngIf="editBalanceValue"
+                    href="javascript: void(0);"
+                    (click)="updateBalance()"
+                    class="btn btn-success btn-sm"
+                    >Update {{ "HEADER.CONTENT.LEAVEBALANCE" | translate }}</a
+                  >
+                </div>
+              </div>
+              <form class="repeater" [formGroup]="form">
+                <div class="table-responsive">
+                  <table class="table table-dark table-hover m-0">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>{{ "HEADER.CONTENT.LEAVETYPE" | translate }}</th>
+                        <th class="text-sm-end">
+                          {{ "HEADER.CONTENT.BALANCE" | translate }}
+                        </th>
+                        <!-- <th class="text-sm-end">
+                            <i class="bx bx-edit"></i>
+                          </th>
+                          <th></th> -->
+                      </tr>
+                    </thead>
+
+                    <tbody formArrayName="formlist">
+                      <tr
+                        *ngFor="let data1 of formData().controls; let i = index"
+                        [formGroupName]="i"
+                      >
+                        <th style="width: 1%; white-space: nowrap">
+                          {{ i + 1 }}
+                        </th>
+                        <td>
+                          {{ data1.value.Name }}
+                        </td>
+
+                        <td style="width: 15%">
+                          <div
+                            *ngIf="editBalanceValue"
+                            class="col-sm-auto text-sm-end"
+                          >
+                            <input
+                              type="number"
+                              class="form-control form-control-sm"
+                              id="i"
+                              min="0"
+                              formControlName="Balance"
+                            />
+                          </div>
+                          <div
+                            *ngIf="!editBalanceValue"
+                            class="col-sm-auto text-sm-end"
+                          >
+                            {{ data1.value.Balance }}
+                          </div>
+                        </td>
+
+                        <!-- <td class="text-sm-end">
+                            <a
+                              href="javascript:void(0)"
+                              ngbTooltip="Edit"
+                              (click)="openBalance(data1)"
+                              ><i class="bx bx-pencil"></i
+                            ></a>
+                          </td>
+                          <td></td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </form>
+
+              <!-- <div class="table-responsive">
+                  <table class="table table-dark mb-0">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>{{ 'HEADER.CONTENT.LEAVETYPE' | translate }}</th>
+                        <th class="text-sm-end">Balance</th>
+                        <th class="text-sm-end"><i class="bx bx-edit"></i></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of userLeaveBalance; let i = index">
+                        <th scope="row" style="width: 1%; white-space: nowrap">
+                          {{ i + 1 }}
+                        </th>
+                        <td>{{ item.Name }}</td>
+                        <td class="text-sm-end">{{ item.Balance }}</td>
+                        <td class="text-sm-end">
+                          <a
+                            href="javascript:void(0)"
+                            ngbTooltip="Edit"
+                            (click)="openEditModal(editDataModal, item)"
+                            ><i class="bx bx-pencil"></i
+                          ></a>
+
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div> -->
+
+              <!-- <ul class="verti-timeline list-unstyled">
+                  <li class="event-list active">
+                    <div class="event-timeline-dot">
+                      <i class="bx bx-right-arrow-circle bx-fade-right"></i>
+                    </div>
+                    <div class="media">
+                      <div class="me-3">
+                        <i class="bx bx-server h4 text-primary"></i>
+                      </div>
+                      <div class="media-body">
+                        <div>
+                          <h5 class="font-size-15">
+                            <a href="javascript: void(0);" class="text-dark"
+                              >Back end Developer</a
+                            >
+                          </h5>
+                          <span class="text-primary">2016 - 19</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="event-list">
+                    <div class="event-timeline-dot">
+                      <i class="bx bx-right-arrow-circle"></i>
+                    </div>
+                    <div class="media">
+                      <div class="me-3">
+                        <i class="bx bx-code h4 text-primary"></i>
+                      </div>
+                      <div class="media-body">
+                        <div>
+                          <h5 class="font-size-15">
+                            <a href="javascript: void(0);" class="text-dark"
+                              >Front end Developer</a
+                            >
+                          </h5>
+                          <span class="text-primary">2013 - 16</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="event-list">
+                    <div class="event-timeline-dot">
+                      <i class="bx bx-right-arrow-circle"></i>
+                    </div>
+                    <div class="media">
+                      <div class="me-3">
+                        <i class="bx bx-edit h4 text-primary"></i>
+                      </div>
+                      <div class="media-body">
+                        <div>
+                          <h5 class="font-size-15">
+                            <a href="javascript: void(0);" class="text-dark"
+                              >UI /UX Designer</a
+                            >
+                          </h5>
+                          <span class="text-primary">2011 - 13</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Leave History</h4>
+          <div class="table-responsive">
+            <table class="table table-nowrap table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.REQUESTEDBY" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.DATEREQUESTED" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.LEAVETYPE" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.STARTDATE" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.ENDDATE" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.RETURNEDDATE" | translate }}
+                  </th>
+                  <th scope="col">{{ "HEADER.CONTENT.DAYS" | translate }}</th>
+                  <th class="text-sm-end" scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of userLeaveList; let i = index">
+                  <th scope="row" style="width: 1%; white-space: nowrap">
+                    <div class="avatar-xs">
+                      <span class="avatar-title rounded-circle">
+                        {{ i + 1 }}
+                      </span>
+                    </div>
+                  </th>
+                  <td>{{ item.RequestedBy }}</td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.RequestTime | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.LeaveType }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.LeaveStarted | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.LeaveEnded | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.ReturnedDate | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.NoOfDays | number }}
+                  </td>
+                  <td
+                    style="width: 1%; white-space: nowrap"
+                    class="text-sm-end"
+                  >
+                    <span [ngClass]="statusClass(item.Status)">
+                      {{ item.Status }}</span
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="row">
+    <div class="col-xl-4">
+      <div class="card overflow-hidden">
+        <div class="bg-soft bg-primary">
+          <div class="row">
+            <div class="col-7">
+              <div class="text-primary p-3">
+              </div>
+            </div>
+            <div class="col-5 align-self-end">
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-0">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="avatar-md profile-user-wid mb-4">
+                <img
+                  src="assets/images/users/avatar.png"
+                  alt=""
+                  class="img-thumbnail rounded-circle"
+                />
+              </div>
+              <h5 class="font-size-15 text-truncate">Cynthia Price</h5>
+              <p class="text-muted mb-0 text-truncate">UI/UX Designer</p>
+            </div>
+
+            <div class="col-sm-8">
+              <div class="pt-4">
+                <div class="row">
+                  <div class="col-6">
+                    <h5 class="font-size-15">125</h5>
+                    <p class="text-muted mb-0">Projects</p>
+                  </div>
+                  <div class="col-6">
+                    <h5 class="font-size-15">$1245</h5>
+                    <p class="text-muted mb-0">Revenue</p>
+                  </div>
+                </div>
+                <div class="mt-4">
+                  <a href="javascript: void(0);" class="btn btn-primary btn-sm"
+                    >View Profile <i class="mdi mdi-arrow-right ms-1"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4">{{ 'HEADER.CONTENT.PERSONALINFORMATION' | translate }}</h4>
+
+          <p class="text-muted mb-4">
+            Hi I'm Cynthia Price,has been the industry's standard dummy text To
+            an English person, it will seem like simplified English, as a
+            skeptical Cambridge.
+          </p>
+          <div class="table-responsive">
+            <table class="table table-nowrap mb-0">
+              <tbody>
+                <tr>
+                  <th scope="row">Full Name :</th>
+                  <td>Cynthia Price</td>
+                </tr>
+                <tr>
+                  <th scope="row">Mobile :</th>
+                  <td>(123) 123 1234</td>
+                </tr>
+                <tr>
+                  <th scope="row">{{ 'HEADER.CONTENT.EMAIL' | translate }} :</th>
+                  <td>cynthiaskote@gmail.com</td>
+                </tr>
+                <tr>
+                  <th scope="row">Location :</th>
+                  <td>California, United States</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-5">Experience</h4>
+          <div class="">
+            <ul class="verti-timeline list-unstyled">
+              <li class="event-list active">
+                <div class="event-timeline-dot">
+                  <i class="bx bx-right-arrow-circle bx-fade-right"></i>
+                </div>
+                <div class="media">
+                  <div class="me-3">
+                    <i class="bx bx-server h4 text-primary"></i>
+                  </div>
+                  <div class="media-body">
+                    <div>
+                      <h5 class="font-size-15">
+                        <a href="javascript: void(0);" class="text-dark"
+                          >Back end Developer</a
+                        >
+                      </h5>
+                      <span class="text-primary">2016 - 19</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="event-list">
+                <div class="event-timeline-dot">
+                  <i class="bx bx-right-arrow-circle"></i>
+                </div>
+                <div class="media">
+                  <div class="me-3">
+                    <i class="bx bx-code h4 text-primary"></i>
+                  </div>
+                  <div class="media-body">
+                    <div>
+                      <h5 class="font-size-15">
+                        <a href="javascript: void(0);" class="text-dark"
+                          >Front end Developer</a
+                        >
+                      </h5>
+                      <span class="text-primary">2013 - 16</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="event-list">
+                <div class="event-timeline-dot">
+                  <i class="bx bx-right-arrow-circle"></i>
+                </div>
+                <div class="media">
+                  <div class="me-3">
+                    <i class="bx bx-edit h4 text-primary"></i>
+                  </div>
+                  <div class="media-body">
+                    <div>
+                      <h5 class="font-size-15">
+                        <a href="javascript: void(0);" class="text-dark"
+                          >UI /UX Designer</a
+                        >
+                      </h5>
+                      <span class="text-primary">2011 - 13</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-8">
+      <div class="row">
+        <div *ngFor="let stat of statData" class="col-md-4">
+          <app-stat
+            [title]="stat.title"
+            [value]="stat.value"
+            [icon]="stat.icon"
+          ></app-stat>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Revenue</h4>
+          <apx-chart
+            dir="ltr"
+            class="apex-charts"
+            [series]="revenueBarChart.series"
+            [chart]="revenueBarChart.chart"
+            [xaxis]="revenueBarChart.xaxis"
+            [colors]="revenueBarChart.colors"
+            [yaxis]="revenueBarChart.yaxis"
+            [dataLabels]="revenueBarChart.dataLabels"
+            [stroke]="revenueBarChart.stroke"
+            [plotOptions]="revenueBarChart.plotOptions"
+            [fill]="revenueBarChart.fill"
+          >
+          </apx-chart>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4">My Projects</h4>
+          <div class="table-responsive">
+            <table class="table table-nowrap table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Projects</th>
+                  <th scope="col">{{ 'HEADER.CONTENT.STARTDATE' | translate }}</th>
+                  <th scope="col">Deadline</th>
+                  <th scope="col">Budget</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>LMS admin UI</td>
+                  <td>2 Sep, 2019</td>
+                  <td>20 Oct, 2019</td>
+                  <td>$506</td>
+                </tr>
+
+                <tr>
+                  <th scope="row">2</th>
+                  <td>LMS admin Logo</td>
+                  <td>1 Sep, 2019</td>
+                  <td>2 Sep, 2019</td>
+                  <td>$94</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>Redesign - Landing page</td>
+                  <td>21 Sep, 2019</td>
+                  <td>29 Sep, 2019</td>
+                  <td>$156</td>
+                </tr>
+                <tr>
+                  <th scope="row">4</th>
+                  <td>App Landing UI</td>
+                  <td>29 Sep, 2019</td>
+                  <td>04 Oct, 2019</td>
+                  <td>$122</td>
+                </tr>
+                <tr>
+                  <th scope="row">5</th>
+                  <td>Blog Template</td>
+                  <td>05 Oct, 2019</td>
+                  <td>16 Oct, 2019</td>
+                  <td>$164</td>
+                </tr>
+                <tr>
+                  <th scope="row">6</th>
+                  <td>Redesign - Multipurpose Landing</td>
+                  <td>17 Oct, 2019</td>
+                  <td>05 Nov, 2019</td>
+                  <td>$192</td>
+                </tr>
+                <tr>
+                  <th scope="row">7</th>
+                  <td>Logo Branding</td>
+                  <td>04 Nov, 2019</td>
+                  <td>05 Nov, 2019</td>
+                  <td>$94</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>

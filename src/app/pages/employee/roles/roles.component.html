@@ -1,0 +1,186 @@
+<div class="container-fluid" *ngIf="hasViewAccess">
+  <app-page-title title="{{ 'HEADER.CONTENT.ROLES' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <div class="card">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative" hidden>
+                  <!-- <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search..."
+                    [(ngModel)]="term"
+                  /> -->
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="text-sm-end">
+                <button type="button" class="btn btn-success btn-rounded mb-2 me-2" data-target="#newDataModal"
+                  data-toggle="modal" (click)="openModal(newDataModal)">
+                  <i class="fas fa-plus font-size-64 align-left mr-1"></i>
+                  {{ "HEADER.CONTENT.ADDNEW" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col" style="width: 70px">#</th>
+                  <th scope="col">{{ "HEADER.CONTENT.NAME" | translate }}</th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.DESCRIPTION" | translate }}
+                  </th>
+                  <th style="width: 1%; white-space: nowrap" scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of roleList; let i = index; trackBy: trackByFn">
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="avatar-xs">
+                      <span class="avatar-title rounded-circle">
+                        {{ i + 1 }}
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <h5 class="font-size-14 mb-1">
+                      <a href="javascript: void(0);" class="text-dark">{{
+                        item.Name
+                        }}</a>
+                    </h5>
+                  </td>
+                  <td>{{ item.Description }}</td>
+
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="text-sm-end">
+                      <ul class="list-inline font-size-15 contact-links mb-0">
+                        <li class="list-inline-item px-2">
+                          <a href="javascript:void(0)" ngbTooltip="{{ 'HEADER.CONTENT.EDIT' | translate }}"
+                            (click)="openEditModal(newDataModal, item)"><i class="bx bx-pencil"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #newDataModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">{{ modalTitle }}</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-hidden="true"></button>
+    </div>
+    <div class="modal-body">
+      <form autocomplete="off" class="form-horizontal" [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+        <div class="container-fluid">
+          <div class="mb-3">
+            <label for="formrow-name-input">{{
+              "HEADER.CONTENT.NAME" | translate
+              }}</label>
+            <input type="text" class="form-control" id="formrow-name-input" formControlName="Name" [ngClass]="{
+                'is-invalid': roleFormSubmit && f.Name.errors
+              }" />
+            <div *ngIf="roleFormSubmit && f.Name.errors" class="invalid-feedback">
+              <span *ngIf="f.Name.errors.required">This field is required.</span>
+            </div>
+          </div>
+
+          <br />
+
+          <div class="mb-3">
+            <label for="formrow-Description-input">{{
+              "HEADER.CONTENT.NOTES" | translate
+              }}</label>
+            <textarea formControlName="Description" class="form-control" rows="3"
+              id="formrow-Description-input"></textarea>
+          </div>
+
+          <br />
+
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">
+                {{ "HEADER.CONTENT.FUNCTIONACCESS" | translate }}
+              </h4>
+
+              <form class="repeater" [formGroup]="form">
+                <div class="table-responsive">
+                  <table class="table table-sm table-bordered table-hover m-0">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>{{ "HEADER.CONTENT.NAME" | translate }}</th>
+                        <th><i class="fas fa-eye"></i></th>
+                        <th><i class="fas fa-plus-square"></i></th>
+                        <th><i class="fas fa-pencil-alt"></i></th>
+                        <th><i class="fas fa-trash-alt"></i></th>
+                      </tr>
+                    </thead>
+
+                    <tbody formArrayName="formlist">
+                      <tr *ngFor="let data1 of formData().controls; let i = index; trackBy: trackByFn"
+                        [formGroupName]="i">
+                        <th style="width: 1%; white-space: nowrap">
+                          {{ i + 1 }}
+                        </th>
+                        <td>
+                          {{ data1.value.Name }}
+                        </td>
+
+                        <td>
+                          <div class="form-check form-check-success mb-3">
+                            <input class="form-check-input" type="checkbox" id="formCheckcolor2"
+                              formControlName="AllowView" checked />
+                          </div>
+                        </td>
+
+                        <td>
+                          <div class="form-check form-check-success mb-3">
+                            <input class="form-check-input" type="checkbox" id="formCheckcolor3"
+                              formControlName="AllowAdd" checked />
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-check form-check-success mb-3">
+                            <input class="form-check-input" type="checkbox" id="formCheckcolor4"
+                              formControlName="AllowEdit" checked />
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-check form-check-success mb-3">
+                            <input class="form-check-input" type="checkbox" id="formCheckcolor1"
+                              formControlName="AllowDelete" checked />
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- {{ form.value | json }} -->
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary w-md">
+            {{ "HEADER.CONTENT.SUBMIT" | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div>

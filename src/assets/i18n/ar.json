@@ -1,0 +1,530 @@
+{
+  "HEADER": {
+    "SEARCH": "بحث ...",
+    "MEGA_MENU": "Mega Menu",
+    "NOTIFICATIONS": {
+      "TITLE": "Notifications",
+      "VIEW_ALL": "View All",
+      "LOAD_MORE": "View More..",
+      "FIRST": {
+        "TITLE": "Your order is placed",
+        "TEXT": "If several languages coalesce the grammar",
+        "TIME": "3 min ago"
+      },
+      "SECOND": {
+        "TITLE": "James Lemire",
+        "TEXT": "It will seem like simplified English.",
+        "TIME": "1 hours ago"
+      },
+      "THIRD": {
+        "TITLE": "Your item is shipped",
+        "TEXT": "If several languages coalesce the grammar",
+        "TIME": "3 min ago"
+      },
+      "FOUR": {
+        "TITLE": "Salena Layfield",
+        "TEXT": "As a skeptical Cambridge friend of mine occidental.",
+        "TIME": "1 hours ago"
+      }
+    },
+    "CONTENT": {
+      "MEW": "وزارة الكهرباء والماء",
+      "KUWAIT": "دولة الكويت",
+      "DEPARTMENTNAME": "إدارة شؤون",
+      "EMPLOYEELEAVEREQUEST": "العاملينطلب إجازة",
+      "DATEREQUESTED": "تاريخ الطلب",
+      "FILENO": "رقم الملف",
+      "CIVILID": "رقم المدني",
+      "ADDNEW": " إضافة جديد ",
+      "ADDRESS": "العنوان",
+      "APPROVAL": " الموافقة ",
+      "APPROVED": "وافق",
+      "BALANCE": " الرصيد ",
+      "CANCELED": "ألغيت",
+      "CHANGEPASSWORD": "تغيير كلمة المرور",
+      "CIVILID": "الرقم المدني",
+      "CONFIRMPASSWORD": "تأكيد كلمة المرور",
+      "CONTACTNO": " الاتصال ",
+      "DASHBOARD": "لوحة القيادة",
+      "DATEOFBIRTH": " تاريخ الميلاد ",
+      "DATEOFJOIN": "تاريخ التعيين",
+      "DATEREQUESTED": " تاريخ طلب ",
+      "DAYS": "عدد الأيام",
+      "DEPARTMENT": "الإدارة",
+      "DESCRIPTION": "الوصف",
+      "EDIT": " تعديل ",
+      "EMAIL": "البريد الإلكتروني",
+      "EMPLOYEE": "الموظف",
+      "EMPLOYEELIST": "  قائمة الموظف ",
+      "ENDDATE": "تاريخ",
+      "EXTRATAKENLEAVES": " أخذ إجازة إضافية ",
+      "FILENO": "رقم الملف",
+      "FILTERLEAVE": " إجازة التصفية ",
+      "FORGOTYOURPASSWORD": " نسيت كلمة المرور الخاصة بك؟ ",
+      "FUNCTIONACCESS": " الوصول إلى الوظيفة ",
+      "GENDER": " الجنس ",
+      "HOMEPHONE": " هاتف المنزل ",
+      "LANGUAGE": " اللغة ",
+      "LASTRETURNEDDATE": " آخر تاريخ عودة ",
+      "LASTTAKENDATE": " آخر تاريخ المأخوذ ",
+      "LATEDAYS": " أيام التأخير",
+      "LEAVEBALANCE": " رصيد الإجازات ",
+      "LEAVEDETAILREPORT": " ترك التقرير التفصيلي ",
+      "LEAVEREPORT": " ترك التقرير",
+      "LEAVEREQUEST": " طلب المغادرة ",
+      "LEAVERETURN": "إشعار عودة",
+      "LEAVETAKEN": " المغادرة المأخوذة ",
+      "LEAVETYPE": "نوع الإجازة",
+      "LOCALVACATION": " إجازة داخلية ",
+      "LOGIN": " تسجيل دخول ",
+      "MOBILE": "الرقم  الهاتف المحمول ",
+      "NAME": "الاسم",
+      "NATIONALITY": "الجنسية",
+      "NOTES": " ملاحظات ",
+      "OFFICEPHONE": "هاتف المكتب ",
+      "PASSWORD": " كلمه المرور",
+      "PENDINGREQUEST": " طلب معلق ",
+      "PERSONALINFORMATION": "  المعلومات الشخصية ",
+      "PROFILE": "مرفوض",
+      "REJECTED": " الملف الشخصي ",
+      "REMEMBERIT": " تذكر ذلك ",
+      "REQUEST": " طلب ",
+      "REQUESTED": "طلب من قبل",
+      "REQUESTEDBY": "طلب من قبل",
+      "RESET": " إعادة تعيين ",
+      "RESETPASSWORD": " إعادة تعيين كلمة مرور ",
+      "RESETPASSWORDWITHLMS": " إعادة تعيين كلمة المرور مع LMS",
+      "RETURNED": " العودة",
+      "RETURNEDDATE": " تاريخ العودة ",
+      "ROLES": " الأدوار ",
+      "SAVE": "حفظ",
+      "SEARCH": "بحث",
+      "SEARCHEMPLOYEE": " البحث عن موظف ",
+      "SIGNINHERE": " تسجيل الدخول هنا ",
+      "SIGNINTOCONTINUETOLMS": " قم بتسجيل الدخول للمتابعة إلى LMS ",
+      "STARTDATE": "بداية التاريخ",
+      "STATUS": "الحالة",
+      "SUBMIT": " إرسال ",
+      "WELCOMEBACK": " مرحبا بعودتك",
+      "WELCOMETODASHBOARD": "مرحبا بكم في لوحة القيادة",
+      "EDITLEAVEBALANCE": "Edit Leave Balance",
+      "UPDATELEAVEBALANCE": "Update Leave Balance",
+      "LEAVEHISTORY": "Leave History",
+      "DATEFROM": "من",
+      "DATETO": "إلى",
+      "MYPROFILE": "My Profile",
+      "CLEAR": "Clear",
+      "MASTERS": "Masters",
+      "JOBDEGREE": "الدرجة الوظيفية ",
+      "GRADE": "الدرجات",
+      "USERS": "المستخدم",
+      "CODE": "الرمز",
+      "QUALIFICATION": "المؤهل",
+      "FUNCTIONALGROUP": "المجموعة الوظيفية",
+      "BUDGETTYPE": "نوع الميزانية",
+      "DESIGNATION": "المنصب",
+      "CONTRACTTYPE": "نوع العقد",
+      "JOBLEVEL": "المستوى الوظيفي",
+      "JOBTITLE": "المسمى الوظيفي",
+      "JOBDESCRIPTION": "الصفة الوظيفية",
+      "PROGRAM": "البرنامج",
+      "SECTOR": "القطاع",
+      "ANNUALEVALUATION": "التقييم السنوي",
+      "VACATION": "الإجازة",
+      "ALLOWANCETYPE": "نوع البدل",
+      "RETIRED": "متقاعد؟",
+      "REASONFORRETIREMENT": "سبب التقاعد",
+      "REASONFORPROMOTION": "سبب الترقية",
+      "PRIOREXPERIENCE": "الخبرات السابقة",
+      "SOCIALSTATUS": "الحالة الاجتماعية",
+      "STARTVALUE": "القيمة البدائية",
+      "ENDVALUE": "القيمة النهائية",
+      "PERSONALDATA": "بيانات الموظف",
+      "PREVIOUSEXPERIENCE": "الخبرات السابقة",
+      "JOBDEGREEDATA": "بيانات الدرجة الوظيفية",
+      "CHANGEJOBTITILE": "تغيير المسمى الوظيفي",
+      "ANNUALEVALUATIONDATA": "بيانات التقييم السنوي",
+      "VACATIONINFORMATION": "Vacation Information",
+      "INTERNALTRANSFER": "Internal Transfer",
+      "CHANGEJOBLEVEL": "Change Job Level",
+      "RETIREMENT": "التقاعد",
+      "ARTICLENO": "رقم القرار",
+      "PHONENO": "الهاتف",
+      "BASIC": "أساسي",
+      "SHIFT": "نوبات",
+      "PERMANENCYTYPE": "Permanency Type",
+      "OTHEROPTIONS": "خيارات أخرى",
+      "HOUSINGALLOWANCE": "بدل ",
+      "MOBILEALLOWANCE": "موبايل",
+      "VEHICLEALLOWANCE": "مركبة",
+      "INSIDEBUILDING": "داخل المبنى",
+      "NEXTJOBLEVEL": "المستوى الوظيفي التالي",
+      "CURRENTGRADE": "الدرجة الحالية",
+      "NEXTGRADE": "الدرجة التالية",
+      "NEXTJOBLEVELDATE": "موعد المستوى الوظيفي التالي",
+      "CURRENTGRADEDATE": "موعد الدرجة الحالية",
+      "NEXTGRADEDATE": "موعد الدرجة التالية",
+      "ALLOWANCE": "البدل",
+      "NEXTALLOWANCE": "البدل التالي",
+      "VERIFY": "تحقق",
+      "DUTYTYPE": "نوع الدوام",
+      "PROMOTIONS": "الترقيات",
+      "ADDQUALIFICATION": "إدارة المؤهلات",
+      "HISTORY": "السجل",
+      "DATEQUALIFIED": "سنة المؤهل",
+      "REMOVE": "Remove",
+      "WORKPLACE": "مكان العمل",
+      "DATEPROMOTED": "تاريخ الترقية",
+      "DATEAFFECTED": "Date Affected",
+      "SEARCHUSER": "Search User",
+      "USERLIST": "قائمة المستخدم",
+      "BONUS": "الاعمال الممتازة",
+      "UPLOADFILE": "رفع ملف",
+      "ADJUSTMENT": "ملحق",
+      "FILEUPLOAD": "رفع ملف",
+      "UPLOAD": "رفع",
+      "SETTINGS": "الإعدادات",
+      "BONUSAMOUNTMAPPING": "الإعدادات-تعيين مبلغ المكافأة",
+      "TYPE": "Type",
+      "AMOUNT": "الكمية",
+      "ADD": "Add",
+      "SELECT": "اختار",
+      "CALCULATEBONUS": "علاوة الحساب",
+      "APPLICATIONNAME": "نظام إدارة الموظفين",
+      "PRINT": "طباعة",
+      "PRINTTIME": "وقت الطباعة",
+      "BONUSADJUSTMENT": "ملحق",
+      "YEAR": "سنة",
+      "CUSTOMREPORT": "تقرير مخصص",
+      "MANUALENTRY": "البيانات الاساسية / المبالغ",
+      "UPDATEALL": "تحديث الجميع",
+      "PERCENTAGE": "نسبة مئوية",
+      "SELECTCOLUMNS": "Select Columns",
+      "TITLE": "Title",
+      "YEARFROM": "Year From",
+      "YEARTO": "Year To"
+    },
+    "MESSAGES": {
+      "HEADER": {
+        "RESET": "",
+        "FAILED": "",
+        "SUCCESS": ""
+      },
+      "LEAVEREQUESTCONTENT1": "السيد / مدير ادارة شؤون العاملين",
+      "LEAVEREQUESTCONTENT2": "المحترم"
+    },
+    "REPORTCONTENT": {
+      "LEAVEREQUESTCONTENT1": "السيد / مدير ادارة شؤون العاملين",
+      "LEAVEREQUESTCONTENT2": "المحترم"
+    },
+    "SETTINGS": "Settings",
+    "UI": {
+      "TITLE": "UI Components",
+      "LIGHTBOX": "LightBox",
+      "RANGE_SLIDER": "Range Slider",
+      "SWEET_ALERT": "Sweet Alert",
+      "RATING": "Rating",
+      "FORMS": "Forms",
+      "TABLES": "Tables",
+      "CHARTS": "Charts"
+    },
+    "APPLICATIONS": {
+      "TITLE": "Applications",
+      "ECOMMERCE": "Ecommerce",
+      "CALENDAR": "Calendar",
+      "EMAIL": "Email",
+      "PROJECTS": "Projects",
+      "TASKS": "Tasks",
+      "CONTACTS": "Contacts"
+    },
+    "EXTRA_PAGES": {
+      "TITLE": "Extra Pages",
+      "LIGHT_SIDEBAR": "Light Sidebar",
+      "COMPACT_SIDEBAR": "Compact Sidebar",
+      "HORIZONTAL_LAYOUT": "Horizontal layout",
+      "MAINTENANCE": "Maintenance",
+      "COMING SOON": "Coming Soon",
+      "TIMELINE": "Timeline",
+      "FAQ": "FAQs"
+    },
+    "LOGIN": {
+      "PROFILE": "Profile",
+      "MY_WALLET": "My Wallet",
+      "SETTINGS": "Settings",
+      "LOCK_SCREEN": "Lock screen",
+      "LOGOUT": "تسجيل الخروج"
+    }
+  },
+  "MENUITEMS": {
+    "MENU": {
+      "TEXT": "قائمة"
+    },
+    "EMPLOYEE": {
+      "TEXT": "Employee"
+    },
+    "DASHBOARDS": {
+      "TEXT": "Dashboards",
+      "BADGE": "04",
+      "LIST": {
+        "DEFAULT": "Default",
+        "SAAS": "Saas",
+        "CRYPTO": "Crypto",
+        "BLOG": "Blog"
+      }
+    },
+    "LAYOUTS": {
+      "TEXT": "Layouts",
+      "LIST": {
+        "HORIZONTAL": "Horizontal",
+        "LIGHTSIDEBAR": "Light Sidebar",
+        "COMPACTSIDEBAR": "Compact Sidebar",
+        "ICONSIDEBAR": "Icons Sidebar",
+        "BOXED": "Boxed Layout",
+        "COLOREDSIDEBAR": "Colored Sidebar",
+        "VERTICAL": "Vertical",
+        "LIGHTTOPBAR": "Light Topbar",
+        "COLOREDHEADER": "Colored Header",
+        "SCROLLABLE": "Scrollable"
+      }
+    },
+    "APPS": {
+      "TEXT": "Apps"
+    },
+    "CALENDAR": {
+      "TEXT": "Calendar"
+    },
+    "CHAT": {
+      "TEXT": "Chat",
+      "BADGE": "New"
+    },
+    "FILEMANAGER": {
+      "TEXT": "File Manager",
+      "BADGE": "New"
+    },
+    "ECOMMERCE": {
+      "TEXT": "Ecommerce",
+      "LIST": {
+        "PRODUCTS": "Products",
+        "PRODUCTDETAIL": "Product Detail",
+        "ORDERS": "Orders",
+        "CUSTOMERS": "Customers",
+        "CART": "Cart",
+        "CHECKOUT": "Checkout",
+        "SHOPS": "Shops",
+        "ADDPRODUCT": "Add Product"
+      }
+    },
+    "CRYPTO": {
+      "TEXT": "Crypto",
+      "LIST": {
+        "WALLET": "Wallet",
+        "BUY/SELL": "Buy/Sell",
+        "EXCHANGE": "Exchange",
+        "LENDING": "Lending",
+        "ORDERS": "Orders",
+        "KYCAPPLICATION": "KYC Application",
+        "ICOLANDING": "ICO Landing"
+      }
+    },
+    "EMAIL": {
+      "TEXT": "Email",
+      "LIST": {
+        "INBOX": "Inbox",
+        "READEMAIL": "Read Email",
+        "TEMPLATE": {
+          "BADGE": "New",
+          "TEXT": "Template",
+          "LIST": {
+            "BASIC": "Basic Action",
+            "ALERT": "Alert Email",
+            "BILLING": "Billing Email"
+          }
+        }
+      }
+    },
+    "INVOICES": {
+      "TEXT": "Invoices",
+      "LIST": {
+        "INVOICELIST": "Invoice List",
+        "INVOICEDETAIL": "Invoice Detail"
+      }
+    },
+    "PROJECTS": {
+      "TEXT": "Projects",
+      "LIST": {
+        "GRID": "Projects Grid",
+        "PROJECTLIST": "Projects List",
+        "OVERVIEW": "Project Overview",
+        "CREATE": "Create New"
+      }
+    },
+    "TASKS": {
+      "TEXT": "Tasks",
+      "LIST": {
+        "TASKLIST": "Task List",
+        "KANBAN": "Kanban Board",
+        "CREATETASK": "Create Task"
+      }
+    },
+    "CONTACTS": {
+      "TEXT": "Contacts",
+      "LIST": {
+        "USERGRID": "User Grid",
+        "USERLIST": "User List",
+        "PROFILE": "Profile"
+      }
+    },
+    "EMPLOYEE": {
+      "TEXT": "Employee",
+      "LIST": {
+        "EMPLOYEELIST": "Employee List",
+        "PROFILE": "Profile",
+        "ROLES": "Roles"
+      }
+    },
+    "REQUEST": {
+      "TEXT": "Request",
+      "LIST": {
+        "LEAVEREQUEST": "Leave Request",
+        "LEAVERETURN": "Leave Return"
+      }
+    },
+    "APPROVAL": {
+      "TEXT": "Approval",
+      "LIST": {
+        "LEAVEREQUEST": "Leave Request",
+        "REPORT": "Leave Report"
+      }
+    },
+    "BLOG": {
+      "TEXT": "Blog",
+      "BADGE": "New",
+      "LIST": {
+        "BLOGLIST": "Blog List",
+        "BLOGGRID": "Blog Grid",
+        "DETAIL": "Blog Details"
+      }
+    },
+    "PAGES": {
+      "TEXT": "Pages"
+    },
+    "AUTHENTICATION": {
+      "TEXT": "Authentication",
+      "BADGE": "New",
+      "LIST": {
+        "LOGIN": "Login",
+        "LOGIN2": "Login 2",
+        "REGISTER": "Register",
+        "REGISTER2": "Register 2",
+        "RECOVERPWD": "Recover Password",
+        "RECOVERPWD2": "Recover Password 2",
+        "LOCKSCREEN": "Lock screen",
+        "LOCKSCREEN2": "Lock screen 2",
+        "CONFIRMMAIL": "Confirm Mail",
+        "CONFIRMMAIL2": "Confirm Mail 2",
+        "EMAILVERIFICATION": "Email verification",
+        "EMAILVERIFICATION2": "Email verification 2",
+        "TWOSTEPVERIFICATION": "Two step verification",
+        "TWOSTEPVERIFICATION2": "Two step verification 2"
+      }
+    },
+    "UTILITY": {
+      "TEXT": "Utility",
+      "LIST": {
+        "STARTER": "Starter Page",
+        "MAINTENANCE": "Maintenance",
+        "TIMELINE": "Timeline",
+        "FAQS": "FAQs",
+        "PRICING": "Pricing",
+        "ERROR404": "Error 404",
+        "ERROR500": "Error 500"
+      }
+    },
+    "COMPONENTS": {
+      "TEXT": "Components"
+    },
+    "UIELEMENTS": {
+      "TEXT": "UI Elements",
+      "LIST": {
+        "ALERTS": "Alerts",
+        "BUTTONS": "Buttons",
+        "CARDS": "Cards",
+        "CAROUSEL": "Carousel",
+        "DROPDOWNS": "Dropdowns",
+        "GRID": "Grid",
+        "IMAGES": "Images",
+        "LIGHTBOX": "Lightbox",
+        "MODALS": "Modals",
+        "RANGESLIDER": "Range Slider",
+        "PROGRESSBAR": "Progress Bars",
+        "PLACEHOLDER": "Placeholder",
+        "SWEETALERT": "Sweet Alert",
+        "TABS": "Tabs & Accordions",
+        "TYPOGRAPHY": "Typography",
+        "VIDEO": "Video",
+        "GENERAL": "General",
+        "COLORS": "Colors",
+        "CROPPER": "Image Cropper"
+      }
+    },
+    "FORMS": {
+      "TEXT": "Forms",
+      "BADGE": "09",
+      "LIST": {
+        "ELEMENTS": "Form Elements",
+        "VALIDATION": "Form Validation",
+        "ADVANCED": "Form Advanced",
+        "EDITOR": "Form Editor",
+        "FILEUPLOAD": "Form File Upload",
+        "REPEATER": "Form Repeater",
+        "WIZARD": "Form Wizard",
+        "MASK": "Form Mask",
+        "LAYOUTS": "Form Layouts"
+      }
+    },
+    "TABLES": {
+      "TEXT": "Tables",
+      "LIST": {
+        "BASIC": "Basic Tables",
+        "ADVANCED": "Advanced Table"
+      }
+    },
+    "CHARTS": {
+      "TEXT": "Charts",
+      "LIST": {
+        "APEX": "Apex Chart",
+        "CHARTJS": "Chartjs Chart",
+        "CHARTIST": "Chartist Chart",
+        "ECHART": "E Chart"
+      }
+    },
+    "ICONS": {
+      "TEXT": "Icons",
+      "LIST": {
+        "BOXICONS": "Boxicons",
+        "MATERIALDESIGN": "Material Design",
+        "DRIPICONS": "Dripicons",
+        "FONTAWESOME": "Font Awesome"
+      }
+    },
+    "MAPS": {
+      "TEXT": "Maps",
+      "LIST": {
+        "GOOGLEMAP": "Google Maps"
+      }
+    },
+    "MULTILEVEL": {
+      "TEXT": "Multi Level",
+      "LIST": {
+        "LEVEL1": {
+          "1": "Level 1.1",
+          "2": "Level 1.2",
+          "LEVEL2": {
+            "1": "Level 2.1",
+            "2": "Level 2.2"
+          }
+        }
+      }
+    }
+  }
+}

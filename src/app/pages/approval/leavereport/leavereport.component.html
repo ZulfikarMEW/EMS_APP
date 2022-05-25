@@ -1,0 +1,429 @@
+<div class="container-fluid" *ngIf="hasViewAccess">
+  <app-page-title
+    title="Leave Report"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="card d-print-none">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title mb-4">
+                      {{ "HEADER.CONTENT.FILTERLEAVE" | translate }}
+                    </h4>
+
+                    <form
+                      class="form-horizontal"
+                      [formGroup]="filterForm"
+                      (ngSubmit)="onSubmit()"
+                    >
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="mb-3">
+                            <label for="formrow-inputName">{{
+                              "HEADER.CONTENT.NAME" | translate
+                            }}</label>
+                            <input
+                              type="search"
+                              class="form-control"
+                              formControlName="Name"
+                              id="formrow-inputName"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-lg-2">
+                          <div class="mb-3">
+                            <label for="formrow-inputCivilId">{{
+                              "HEADER.CONTENT.CIVILID" | translate
+                            }}</label>
+                            <input
+                              type="search"
+                              class="form-control"
+                              formControlName="CivilId"
+                              id="formrow-inputCivilId"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                          <div class="mb-3">
+                            <label for="formrow-inputFileNo">{{
+                              "HEADER.CONTENT.FILENO" | translate
+                            }}</label>
+                            <input
+                              type="search"
+                              class="form-control"
+                              formControlName="FileNo"
+                              id="formrow-inputFileNo"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <!-- <div class="col-lg-4">
+                          <div class="mb-3">
+                            <label for="formrow-inputRoleId">Employee</label>
+                            <select
+                              id="formrow-inputRoleId"
+                              class="form-control"
+                              formControlName="UserId"
+                            >
+                              <option selected>Select a Employee...</option>
+                              <ng-container *ngFor="let item of employeeList">
+                                <option [value]="item.Id">
+                                  {{ item.Name }}
+                                </option>
+                              </ng-container>
+                            </select>
+                          </div>
+                        </div> -->
+
+                        <div class="col-lg-3">
+                          <div class="mb-3">
+                            <label for="formrow-inputRoleId">{{
+                              "HEADER.CONTENT.LEAVETYPE" | translate
+                            }}</label>
+                            <select
+                              id="formrow-inputRoleId"
+                              class="form-control"
+                              formControlName="LeaveTypeId"
+                            >
+                              <option selected>
+                                Select a
+                                {{ "HEADER.CONTENT.LEAVETYPE" | translate }}...
+                              </option>
+                              <ng-container *ngFor="let item of leaveTypeList">
+                                <option [value]="item.Id">
+                                  {{ item.Description }}
+                                </option>
+                              </ng-container>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                          <label for="example-datef-input">{{
+                            "HEADER.CONTENT.DATEFROM" | translate
+                          }}</label>
+                          <input
+                            class="form-control"
+                            type="date"
+                            id="example-datef-input"
+                            formControlName="LeaveFrom"
+                          />
+                          <!-- <div class="mb-3">
+                            <label for="formrow-inputName">Date From</label>
+                            <input
+                              type="search"
+                              class="form-control"
+                              formControlName="LeaveFrom"
+                              id="formrow-inputName"
+                            />
+                          </div> -->
+                        </div>
+                        <div class="col-lg-3">
+                          <label for="example-datef-input">{{
+                            "HEADER.CONTENT.DATETO" | translate
+                          }}</label>
+                          <input
+                            class="form-control"
+                            type="date"
+                            id="example-datef-input"
+                            formControlName="LeaveTo"
+                          />
+                        </div>
+
+                        <!-- <div class="mb-3">
+                            <label for="formrow-inputName">{{ 'HEADER.CONTENT.DATETO' | translate }}</label>
+                            <input
+                              type="search"
+                              class="form-control"
+                              formControlName="LeaveTo"
+                              id="formrow-inputName"
+                            />
+                          </div> -->
+
+                        <!-- <div class="col-lg-2">
+                          <div class="mb-3">
+                            <label for="formrow-inputCivilId">{{ 'HEADER.CONTENT.LEAVETYPE' | translate }}</label>
+                            <input
+                              type="search"
+                              class="form-control"
+                              formControlName="CivilId"
+                              id="formrow-inputCivilId"
+                            />
+                          </div>
+                        </div> -->
+
+                        <div class="col-lg-3">
+                          <div class="mb-3">
+                            <label for="formrow-inputStatus">{{
+                              "HEADER.CONTENT.STATUS" | translate
+                            }}</label>
+                            <select
+                              id="formrow-inputStatus"
+                              class="form-control"
+                              formControlName="Status"
+                            >
+                              <option selected>Select a Status...</option>
+                              <option value="N">Pending</option>
+                              <option value="A">Approved</option>
+                              <option value="R">Rejected</option>
+                              <option value="C">Canceled</option>
+                              <option value="T">Returned</option>
+                              <option value="O">Not Returned</option>
+                              <option value="D">Delayed</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="text-sm-end">
+                        <button
+                          type="button"
+                          (click)="clearParams()"
+                          class="btn btn-danger w-md"
+                          style="margin-right: 10px"
+                        >
+                          {{ "HEADER.CONTENT.CLEAR" | translate }}
+                        </button>
+                        <button
+                          type="submit"
+                          style="margin-right: 10px"
+                          class="btn btn-primary w-md"
+                        >
+                          {{ "HEADER.CONTENT.SEARCH" | translate }}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showReport" class="row">
+    <div>
+      <div *ngIf="loading">
+        <div>
+          <div class="spinner-chase">
+            <div class="chase-dot"></div>
+            <div class="chase-dot"></div>
+            <div class="chase-dot"></div>
+            <div class="chase-dot"></div>
+            <div class="chase-dot"></div>
+            <div class="chase-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div id="reportData">
+            <div class="invoice-title">
+              <!-- <h4 class="float-end font-size-16">Order # 12345</h4> -->
+              <div class="mb-4">
+                <div class="row">
+                  <div class="col-sm-2">
+                    <img
+                      src="assets/images/MEW-logo1.png"
+                      alt="logo"
+                      height="100"
+                    />
+                  </div>
+                  <div class="col-sm-8">
+                    <div class="text-xl-center">
+                      <h1>{{ "HEADER.CONTENT.MEW" | translate }}</h1>
+                      <!-- <h1>Minstry of Electricity and Water</h1> -->
+                      <h3>Leave Detail Report</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="d-print-none">
+                      <div class="float-end">
+                        <a
+                          href="javascript:window.print()"
+                          class="btn btn-success"
+                          style="margin-right: 10px"
+                          ><i class="fa fa-print"></i
+                        ></a>
+                        <a
+                          href="javascript: void(0);"
+                          (click)="createPDF()"
+                          class="btn btn-primary"
+                          style="margin-right: 10px"
+                          ><i class="fa fas fa-file-pdf"></i
+                        ></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+
+            <div class="card">
+              <div class="card-body">
+                <div
+                  *ngFor="let item of leaveReportResult"
+                  class="table-responsive mb-5"
+                  style="overflow-x: hidden"
+                >
+                  <table class="table table-bordered">
+                    <tr>
+                      <th scope="col">
+                        {{ "HEADER.CONTENT.LEAVETYPE" | translate }}
+                      </th>
+                      <th class="text-end" scope="col">
+                        {{ "HEADER.CONTENT.DATEFROM" | translate }}
+                      </th>
+                      <th class="text-end" scope="col">
+                        {{ "HEADER.CONTENT.DATETO" | translate }}
+                      </th>
+                      <th class="text-end" scope="col">Days</th>
+                      <th class="text-end" scope="col">Status</th>
+                      <th class="text-end" scope="col">Requested</th>
+                      <th class="text-end" scope="col">Approved</th>
+                      <th class="text-end" scope="col">Rejected</th>
+                      <th class="text-end" scope="col">Canceled</th>
+                      <th class="text-end" scope="col">Returned</th>
+                      <th class="text-end" scope="col">
+                        Late {{ "HEADER.CONTENT.DAYS" | translate }}
+                      </th>
+                    </tr>
+                    <ng-container>
+                      <tr>
+                        <td colspan="11">
+                          <div class="row bg-primary bg-softer">
+                            <div class="col-sm-12">
+                              <h3>{{ item.name }}</h3>
+                            </div>
+                            <div class="col-sm-2">
+                              <h6>
+                                {{ "HEADER.CONTENT.FILENO" | translate }}:
+                                {{ item.fNo }}
+                              </h6>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6>
+                                {{ "HEADER.CONTENT.CIVILID" | translate }}:
+                                {{ item.cId }}
+                              </h6>
+                            </div>
+                            <div class="col-sm-2">
+                              <h6>Mobile: {{ item.mobile }}</h6>
+                            </div>
+                            <div class="col-sm-2">
+                              <h6>Office Phone: {{ item.oNo }}</h6>
+                            </div>
+                            <div class="col-sm-2">
+                              <h6>Home Phone: {{ item.hNo }}</h6>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let value of item.values">
+                        <td style="width: 1%; white-space: nowrap">
+                          {{ value.LeaveType }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.LeaveStarted | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.LeaveEnded | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.NoOfDays | number }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.Status }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.RequestTime | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.ApprovedTime | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.RejectedTime | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.CanceledTime | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.ReturnedDate | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.DelayedDays | number }}
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="d-print-none">
+            <div class="float-end">
+              <a href="javascript:window.print()" class="btn btn-success"
+                ><i class="fa fa-print"></i
+              ></a>
+              <a
+                href="javascript: void(0);"
+                (click)="createPDF()"
+                class="btn btn-primary"
+                ><i class="fa fas fa-file-pdf"></i
+              ></a>
+              <a
+                href="javascript: void(0);"
+                (click)="createPDF()"
+                class="btn btn-primary w-md ms-1"
+                ><i class="far fa-file-pdf"></i
+              ></a>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

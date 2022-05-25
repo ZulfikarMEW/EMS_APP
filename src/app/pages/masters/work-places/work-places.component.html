@@ -1,0 +1,142 @@
+<div class="container-fluid">
+  <app-page-title title="{{ 'HEADER.CONTENT.WORKPLACE' | translate }}" [breadcrumbItems]="breadCrumbItems">
+  </app-page-title>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-10">
+              <h4 class="card-title">
+                {{ "HEADER.CONTENT.WORKPLACE" | translate }}
+              </h4>
+            </div>
+            <div class="col-sm-2 text-sm-end">
+              <button type="button" class="btn btn-success btn-rounded mb-2 me-2" data-target="#dataModal"
+                data-toggle="modal" (click)="openModal(dataModal)">
+                <i class="fas fa-plus font-size-64 align-left mr-1"></i>
+                {{ "HEADER.CONTENT.ADDNEW" | translate }}
+              </button>
+            </div>
+
+            <br />
+
+            <div class="col-sm-12">
+              <ngb-progressbar *ngIf="isLoading" [value]="100" [striped]="true" [animated]="true" height="4px"
+                type="info"></ngb-progressbar>
+            </div>
+          </div>
+          <!-- <p class="card-title-desc">
+            Add <code>.table-bordered</code> for borders on all sides of the
+            table and cells.
+          </p> -->
+
+          <div class="table-responsive">
+            <table class="table table-bordered mb-0">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>{{ "HEADER.CONTENT.CODE" | translate }}</th>
+                  <th>{{ "HEADER.CONTENT.DESCRIPTION" | translate }}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of dataList; let i = index; trackBy: trackByFn">
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="avatar-xs">
+                      <span class="avatar-title rounded-circle">
+                        {{ i + 1 }}
+                      </span>
+                    </div>
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.Code }}
+                  </td>
+                  <td style="font-size: medium; font-weight: bold">
+                    {{ item.Description }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="text-sm-end">
+                      <ul class="list-inline font-size-15 contact-links mb-0">
+                        <li class="list-inline-item px-2">
+                          <a href="javascript:void(0)" ngbTooltip="{{ 'HEADER.CONTENT.EDIT' | translate }}"
+                            (click)="openEditModal(dataModal, item)"><i class="bx bx-pencil"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #dataModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">
+        {{ "HEADER.CONTENT.WORKPLACE" | translate }}
+      </h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-hidden="true"></button>
+    </div>
+    <div class="modal-body">
+      <form autocomplete="off" class="form-horizontal" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="formrow-code-input">{{
+                  "HEADER.CONTENT.CODE" | translate
+                  }}</label>
+                <input type="text" class="form-control" id="formrow-code-input" formControlName="Code" [ngClass]="{
+                    'is-invalid': formSubmit && f.Code.errors
+                  }" />
+                <div *ngIf="formSubmit && f.Code.errors" class="invalid-feedback">
+                  <span *ngIf="f.Code.errors.required">This field is required.</span>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label for="formrow-code-input">{{
+                  "HEADER.CONTENT.DESCRIPTION" | translate
+                  }}</label>
+                <input type="text" class="form-control" id="formrow-Description-input" formControlName="Description"
+                  style="font-size: medium; font-weight: bold" [ngClass]="{
+                    'is-invalid': formSubmit && f.Description.errors
+                  }" />
+                <div *ngIf="formSubmit && f.Description.errors" class="invalid-feedback">
+                  <span *ngIf="f.Description.errors.required">This field is required.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" [disabled]="formSubmit" class="btn btn-primary w-md">
+            {{ "HEADER.CONTENT.SAVE" | translate }}
+          </button>
+        </div>
+      </form>
+      <!-- <p>
+        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+        consectetur ac, vestibulum at eros.
+      </p>
+      <p>
+        Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+      </p>
+      <p class="mb-0">
+        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
+        magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
+        ullamcorper nulla non metus auctor fringilla.
+      </p> -->
+    </div>
+  </ng-template>
+</div>

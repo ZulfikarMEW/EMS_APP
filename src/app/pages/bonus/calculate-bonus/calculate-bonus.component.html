@@ -1,0 +1,264 @@
+<div class="container-fluid">
+  <app-page-title
+    title="{{ 'HEADER.CONTENT.CALCULATEBONUS' | translate }}"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+
+  <div class="d-xl-flex">
+    <div class="w-100">
+      <div class="d-md-flex">
+        <div class="card filemanager-sidebar me-md-2">
+          <div class="card-body"></div>
+        </div>
+        <!-- filemanager-leftsidebar -->
+
+        <div class="w-100">
+          <div class="card">
+            <div class="card-body">
+              <div class="row mb-3">
+                <div class="text-center mt-4">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    (click)="startProcess()"
+                    [disabled]="isStartedProcess"
+                  >
+                    Start Process
+                  </button>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="text-center mt-4">
+                  <h5 class="font-size-14 me-3">{{ processMessage }}</h5>
+                </div>
+              </div>
+
+              <div *ngIf="isStartedProcess" class="row mb-3">
+                <div class="text-center mt-4">
+                  <ngb-progressbar
+                    [value]="100"
+                    [striped]="true"
+                    [animated]="true"
+                  ></ngb-progressbar>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="mt-4">
+                <div class="d-flex flex-wrap">
+                  <h5 class="font-size-14 me-3">Validation Errors</h5>
+
+                  <!-- <div class="ms-auto">
+                    <a href="javascript: void(0);" class="fw-medium text-reset"
+                      >View All</a
+                    >
+                  </div> -->
+                </div>
+                <hr class="mt-2" />
+
+                <!-- <div class="table-responsive">
+                  <table
+                    class="table align-middle table-nowrap table-hover mb-0"
+                  >
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Civil Id</th>
+                        <th scope="col">File No</th>
+                        <th scope="col">Percentage</th>
+                        <th scope="col">Grade</th>
+                        <th scope="col">Error Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="let row of validationErrorList; let i = index"
+                      >
+                        <td style="width: 1%; white-space: nowrap">
+                          {{ i + 1 }}
+                        </td>
+                        <td style="width: 1%; white-space: nowrap">
+                          {{ row.CivilIdNo }}
+                        </td>
+                        <td style="width: 1%; white-space: nowrap">
+                          {{ row.FileNo }}
+                        </td>
+                        <td style="width: 1%; white-space: nowrap">
+                          {{ row.Percentage }}
+                        </td>
+                        <td style="width: 1%; white-space: nowrap">
+                          {{ row.Grade }}
+                          <span *ngIf="row.GradeType != null"
+                            >-{{ row.GradeType }}</span
+                          >
+                        </td>
+                        <td>{{ row.ErrorDescription }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <!-- end card -->
+        </div>
+        <!-- end w-100 -->
+      </div>
+    </div>
+
+    <div class="card filemanager-sidebar ms-lg-2">
+      <div class="card-body">
+        <div class="text-center">
+          <!-- <h5 class="font-size-15 mb-4">Storage</h5> -->
+          <!-- <div class="apex-charts" id="radial-chart"></div> -->
+          <!-- <apx-chart
+            dir="ltr"
+            class="apex-charts"
+            [chart]="radialoptions.chart"
+            [series]="radialoptions.series"
+            [labels]="radialoptions.labels"
+            [colors]="radialoptions.colors"
+            [grid]="radialoptions.grid"
+            [plotOptions]="radialoptions.plotOptions"
+            [stroke]="radialoptions.stroke"
+          >
+          </apx-chart>
+
+          <p class="text-muted mt-4">48.02 GB (76%) of 64 GB used</p> -->
+        </div>
+
+        <!-- <div class="mt-4">
+          <div class="card border shadow-none mb-2">
+            <a href="javascript: void(0);" class="text-body">
+              <div class="p-2">
+                <div class="d-flex">
+                  <div class="avatar-xs align-self-center me-2">
+                    <div
+                      class="avatar-title rounded bg-transparent text-success font-size-20"
+                    >
+                      <i class="mdi mdi-image"></i>
+                    </div>
+                  </div>
+
+                  <div class="overflow-hidden me-auto">
+                    <h5 class="font-size-13 text-truncate mb-1">Images</h5>
+                    <p class="text-muted text-truncate mb-0">176 Files</p>
+                  </div>
+
+                  <div class="ms-2">
+                    <p class="text-muted">6 GB</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="card border shadow-none mb-2">
+            <a href="javascript: void(0);" class="text-body">
+              <div class="p-2">
+                <div class="d-flex">
+                  <div class="avatar-xs align-self-center me-2">
+                    <div
+                      class="avatar-title rounded bg-transparent text-danger font-size-20"
+                    >
+                      <i class="mdi mdi-play-circle-outline"></i>
+                    </div>
+                  </div>
+
+                  <div class="overflow-hidden me-auto">
+                    <h5 class="font-size-13 text-truncate mb-1">Video</h5>
+                    <p class="text-muted text-truncate mb-0">45 Files</p>
+                  </div>
+
+                  <div class="ms-2">
+                    <p class="text-muted">4.1 GB</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="card border shadow-none mb-2">
+            <a href="javascript: void(0);" class="text-body">
+              <div class="p-2">
+                <div class="d-flex">
+                  <div class="avatar-xs align-self-center me-2">
+                    <div
+                      class="avatar-title rounded bg-transparent text-info font-size-20"
+                    >
+                      <i class="mdi mdi-music"></i>
+                    </div>
+                  </div>
+
+                  <div class="overflow-hidden me-auto">
+                    <h5 class="font-size-13 text-truncate mb-1">Music</h5>
+                    <p class="text-muted text-truncate mb-0">21 Files</p>
+                  </div>
+
+                  <div class="ms-2">
+                    <p class="text-muted">3.2 GB</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="card border shadow-none mb-2">
+            <a href="javascript: void(0);" class="text-body">
+              <div class="p-2">
+                <div class="d-flex">
+                  <div class="avatar-xs align-self-center me-2">
+                    <div
+                      class="avatar-title rounded bg-transparent text-primary font-size-20"
+                    >
+                      <i class="mdi mdi-file-document"></i>
+                    </div>
+                  </div>
+
+                  <div class="overflow-hidden me-auto">
+                    <h5 class="font-size-13 text-truncate mb-1">Document</h5>
+                    <p class="text-muted text-truncate mb-0">21 Files</p>
+                  </div>
+
+                  <div class="ms-2">
+                    <p class="text-muted">2 GB</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="card border shadow-none">
+            <a href="javascript: void(0);" class="text-body">
+              <div class="p-2">
+                <div class="d-flex">
+                  <div class="avatar-xs align-self-center me-2">
+                    <div
+                      class="avatar-title rounded bg-transparent text-warning font-size-20"
+                    >
+                      <i class="mdi mdi-folder"></i>
+                    </div>
+                  </div>
+
+                  <div class="overflow-hidden me-auto">
+                    <h5 class="font-size-13 text-truncate mb-1">Others</h5>
+                    <p class="text-muted text-truncate mb-0">20 Files</p>
+                  </div>
+
+                  <div class="ms-2">
+                    <p class="text-muted">1.4 GB</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <!-- end row -->
+</div>

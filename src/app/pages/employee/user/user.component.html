@@ -1,0 +1,1251 @@
+<div class="container-fluid" *ngIf="hasViewAccess">
+  <app-page-title title="{{ 'HEADER.CONTENT.USERLIST' | translate }}" [breadcrumbItems]="breadCrumbItems">
+  </app-page-title>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title mb-4">
+                {{ "HEADER.CONTENT.SEARCHEMPLOYEE" | translate }}
+              </h4>
+
+              <form class="form-horizontal" [formGroup]="filterForm" (ngSubmit)="onSubmitFilter()">
+                <div class="row">
+                  <div class="col-lg-4">
+                    <div class="mb-3">
+                      <label for="formrow-inputName">{{
+                        "HEADER.CONTENT.NAME" | translate
+                        }}</label>
+                      <input type="search" class="form-control" formControlName="Name" id="formrow-inputName" />
+                    </div>
+                  </div>
+                  <div class="col-lg-2">
+                    <div class="mb-3">
+                      <label for="formrow-inputCivilId">{{
+                        "HEADER.CONTENT.CIVILID" | translate
+                        }}</label>
+                      <input type="search" class="form-control" formControlName="CivilId" id="formrow-inputCivilId"
+                        maxlength="12" />
+                    </div>
+                  </div>
+
+                  <div class="col-lg-2">
+                    <div class="mb-3">
+                      <label for="formrow-inputFileNo">{{
+                        "HEADER.CONTENT.FILENO" | translate
+                        }}</label>
+                      <input type="search" class="form-control" formControlName="FileNo" id="formrow-inputFileNo"
+                        maxlength="5" />
+                    </div>
+                  </div>
+
+                  <div class="col-lg-2">
+                    <div class="mb-3">
+                      <label for="formrow-inputFileNo text-muted"><span>.</span>
+                      </label>
+                      <div>
+                        <button type="submit" class="btn btn-primary w-md">
+                          {{ "HEADER.CONTENT.SEARCH" | translate }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative" hidden>
+                  <!-- <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search..."
+                    [(ngModel)]="term"
+                  /> -->
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="text-sm-end">
+                <button type="button" class="btn btn-success btn-rounded mb-2 me-2" data-target="#newDataModal"
+                  data-toggle="modal" (click)="openModal(newDataModal)">
+                  <i class="fas fa-plus font-size-64 align-left mr-1"></i>
+                  {{ "HEADER.CONTENT.ADDNEW" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- <app-listheader
+            data-target="#newDataModal"
+            data-toggle="modal"
+            (click)="openModal(newDataModal)"
+          ></app-listheader> -->
+          <div class="table-responsive">
+            <div>
+              <div *ngIf="loading">
+                <div>
+                  <div class="spinner-chase">
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                    <div class="chase-dot"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <table class="table align-middle table-nowrap table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col" style="width: 70px">#</th>
+                  <th scope="col">{{ "HEADER.CONTENT.NAME" | translate }}</th>
+                  <th scope="col">{{ "HEADER.CONTENT.EMAIL" | translate }}</th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.CIVILID" | translate }}
+                  </th>
+                  <th scope="col">{{ "HEADER.CONTENT.FILENO" | translate }}</th>
+                  <th style="width: 1%; white-space: nowrap" scope="col"></th>
+                  <th style="width: 1%; white-space: nowrap" scope="col"></th>
+                  <th style="width: 1%; white-space: nowrap" scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of employeeList; let i = index; trackBy: trackByFn">
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="avatar-xs">
+                      <span class="avatar-title rounded-circle">
+                        {{ i + 1 }}
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <h5 class="font-size-14 mb-1">
+                      <a href="javascript: void(0);" class="text-dark">{{
+                        item.Name
+                        }}</a>
+                    </h5>
+                    <p class="text-muted mb-0">{{ item.Description }}</p>
+                  </td>
+                  <td>{{ item.Email }}</td>
+                  <!-- <td>
+                    <div>
+                      <a
+                        href="javascript: void(0);"
+                        class="badge badge-soft-primary font-size-11 m-1"
+                        >Photoshop</a
+                      >
+                      <a
+                        href="javascript: void(0);"
+                        class="badge badge-soft-primary font-size-11 m-1"
+                        >illustrator</a
+                      >
+                    </div>
+                  </td> -->
+                  <td>{{ item.CivilId }}</td>
+                  <td>{{ item.FileNo }}</td>
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="text-sm-end">
+                      <ul class="list-inline font-size-15 contact-links mb-0">
+                        <li class="list-inline-item px-2">
+                          <a href="javascript:void(0)" ngbTooltip="{{
+                              'HEADER.CONTENT.CHANGEPASSWORD' | translate
+                            }}" (click)="openChangePasswordModal(changeModal, item)"><i class="bx bxs-key"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="text-sm-end">
+                      <ul class="list-inline font-size-15 contact-links mb-0">
+                        <li class="list-inline-item px-2">
+                          <a href="javascript:void(0)" ngbTooltip="{{ 'HEADER.CONTENT.EDIT' | translate }}"
+                            (click)="openEditModal(editDataModal, item)"><i class="bx bx-pencil"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="text-sm-end">
+                      <ul class="list-inline font-size-15 contact-links mb-0">
+                        <li class="list-inline-item px-2">
+                          <a href="javascript:void(0)" ngbTooltip="{{
+                              'HEADER.CONTENT.PROFILE' | translate
+                            }}" (click)="openProfileModal(profileDataModal, item)"><i
+                              class="bx bx-user-circle"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- <div class="row">
+            <div class="col-lg-12">
+              <ul
+                class="
+                  pagination pagination-rounded
+                  justify-content-center
+                  mt-4
+                "
+              >
+                <li class="page-item disabled">
+                  <a href="javascript: void(0);" class="page-link"
+                    ><i class="mdi mdi-chevron-left"></i
+                  ></a>
+                </li>
+                <li class="page-item">
+                  <a href="javascript: void(0);" class="page-link">1</a>
+                </li>
+                <li class="page-item active">
+                  <a href="javascript: void(0);" class="page-link">2</a>
+                </li>
+                <li class="page-item">
+                  <a href="javascript: void(0);" class="page-link">3</a>
+                </li>
+                <li class="page-item">
+                  <a href="javascript: void(0);" class="page-link">4</a>
+                </li>
+                <li class="page-item">
+                  <a href="javascript: void(0);" class="page-link">5</a>
+                </li>
+                <li class="page-item">
+                  <a href="javascript: void(0);" class="page-link"
+                    ><i class="mdi mdi-chevron-right"></i
+                  ></a>
+                </li>
+              </ul>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #newDataModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">{{ modalTitle }}</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-hidden="true"></button>
+    </div>
+    <div class="modal-body">
+      <form autocomplete="off" class="form-horizontal" [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+        <div class="container-fluid">
+          <div class="mb-3">
+            <label for="formrow-name-input">{{
+              "HEADER.CONTENT.NAME" | translate
+              }}</label>
+            <input type="text" class="form-control" id="formrow-name-input" formControlName="Name" [ngClass]="{
+                'is-invalid': empFormSubmit && f.Name.errors
+              }" />
+            <div *ngIf="empFormSubmit && f.Name.errors" class="invalid-feedback">
+              <span *ngIf="f.Name.errors.required">This field is required.</span>
+            </div>
+          </div>
+
+          <br />
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="formrow-email-input">{{
+                  "HEADER.CONTENT.EMAIL" | translate
+                  }}</label>
+
+                <input type="email" class="form-control" id="formrow-email-input" formControlName="Email"
+                  [readonly]="editMode" [ngClass]="{
+                    'is-invalid': empFormSubmit && f.Email.errors
+                  }" />
+                <div *ngIf="empFormSubmit && f.Email.errors" class="invalid-feedback">
+                  <span *ngIf="f.Email.errors.required">This field is required.</span>
+                  <span *ngIf="f.Email.errors.pattern">Please enter a valid email.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4" *ngIf="!editMode">
+              <div class="mb-3">
+                <label for="formrow-password-input">{{
+                  "HEADER.CONTENT.PASSWORD" | translate
+                  }}</label>
+                <input type="password" class="form-control" id="formrow-password-input" formControlName="Password"
+                  [ngClass]="{
+                    'is-invalid': empFormSubmit && f.Password.errors
+                  }" />
+                <strength-checker barLabel="Strength: " [passwordToVerify]="f.Password.value"
+                  (passwordStrength)="passwordValid($event)"></strength-checker>
+
+                <div *ngIf="empFormSubmit && f.Password.errors" class="invalid-feedback">
+                  <span *ngIf="f.Password.errors.required">This field is required.</span>
+                  <span *ngIf="f.Password.errors.minlength">Password must be at least 6 characters.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4" *ngIf="!editMode">
+              <div class="mb-3">
+                <label for="formrow-cPassword-input">{{
+                  "HEADER.CONTENT.CONFIRMPASSWORD" | translate
+                  }}</label>
+                <input type="password" class="form-control" id="formrow-cPassword-input"
+                  formControlName="ConfirmPassword" [ngClass]="{
+                    'is-invalid': empFormSubmit && f.ConfirmPassword.errors
+                  }" />
+                <div *ngIf="empFormSubmit && f.ConfirmPassword.errors" class="invalid-feedback">
+                  <span *ngIf="f.ConfirmPassword.errors.required">This field is required.</span>
+                  <span *ngIf="f.ConfirmPassword.errors.mustMatch">Both passwords should be the same.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br />
+
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputRoleId">{{
+                  "HEADER.CONTENT.ROLES" | translate
+                  }}</label>
+                <select id="formrow-inputRoleId" class="form-control" formControlName="SystemRoleId" [ngClass]="{
+                    'is-invalid': empFormSubmit && f.SystemRoleId.errors
+                  }">
+                  <option value="" selected>Select a Role...</option>
+                  <ng-container *ngFor="let role of roleList; trackBy: trackByFn">
+                    <option [value]="role.Id">{{ role.Name }}</option>
+                  </ng-container>
+                </select>
+                <div *ngIf="empFormSubmit && f.SystemRoleId.errors" class="invalid-feedback">
+                  <span *ngIf="f.SystemRoleId.errors.required">This field is required.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- <form [formGroup]="registrationForm" (ngSubmit)="onSubmitTest()">
+              <div class="d-grid">
+                <select class="custom-select mb-3" (change)="changeCity($event)" formControlName="cityName">
+                  <option value="">Choose City</option>
+                  <option *ngFor="let city of City" [ngValue]="city">
+                    {{ city }}
+                  </option>
+                </select>
+                <div class="invalid-feedback" *ngIf="isSubmitted && cityName?.invalid">
+                  <sup>*</sup>Please provide city name
+                </div>
+                <button type="submit" class="btn btn-danger btn-lg btn-block">
+                  Submit
+                </button>
+              </div>
+            </form> -->
+
+            <!-- <div class="form-group" [class.has-error]="department.touched && department.invalid">
+              <label for="department" class="control-label">
+                Department
+              </label>
+              <select id="department" name="department" [(ngModel)]="employee.department" class="form-control"
+                required#department="ngModel">
+                <option *ngFor="let dept of departments" [value]="dept.id">
+                  {{dept.name}}
+                  </option>
+              </select>
+              <span class="help-block" *ngIf="department.touched && department.invalid">
+                Department is required
+              </span>
+            </div> -->
+
+            <!-- <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputCountry">{{
+                  "HEADER.CONTENT.NATIONALITY" | translate
+                }}</label>
+                <select
+                  id="formrow-inputCountry"
+                  class="form-control"
+                  formControlName="SystemCountryId"
+                >
+                  <option selected>Select a Nationality...</option>
+                  <ng-container *ngFor="let lan of nationalityList">
+                    <option [value]="lan.Id">{{ lan.Name }}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div> -->
+
+            <!-- <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputDepartment">{{
+                  "HEADER.CONTENT.DEPARTMENT" | translate
+                }}</label>
+                <select
+                  id="formrow-inputDepartment"
+                  class="form-control"
+                  formControlName="SystemDepartmentId"
+                >
+                  <option selected>Select a Department...</option>
+                  <ng-container *ngFor="let lan of departmentList">
+                    <option [value]="lan.Id">{{ lan.Name }}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>-->
+          </div>
+
+          <br />
+
+          <div class="row">
+            <div class="col-lg-2">
+              <div class="mb-3">
+                <label for="formrow-FileNo">{{
+                  "HEADER.CONTENT.FILENO" | translate
+                  }}</label>
+                <input type="text" class="form-control" id="formrow-FileNo" formControlName="FileNo" maxlength="5"
+                  [ngClass]="{
+                    'is-invalid': empFormSubmit && f.FileNo.errors
+                  }" />
+                <div *ngIf="empFormSubmit && f.FileNo.errors" class="invalid-feedback">
+                  <span *ngIf="f.FileNo.errors.required">This field is required.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="formrow-CivilId">{{
+                  "HEADER.CONTENT.CIVILID" | translate
+                  }}</label>
+                <input type="text" class="form-control" id="formrow-CivilId" maxlength="12" formControlName="CivilId"
+                  mask="000000000000" [ngClass]="{
+                    'is-invalid': empFormSubmit && f.CivilId.errors
+                  }" />
+                <div *ngIf="empFormSubmit && f.CivilId.errors" class="invalid-feedback">
+                  <span *ngIf="f.CivilId.errors.required">This field is required.</span>
+                </div>
+                <span class="text-muted">e.g "xxxxxxxxxxxx"</span>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="formrow-inputGender">{{
+                  "HEADER.CONTENT.GENDER" | translate
+                  }}</label>
+                <select id="formrow-inputGender" class="form-control" formControlName="GenderId" [ngClass]="{
+                    'is-invalid': empFormSubmit && f.GenderId.errors
+                  }">
+                  <option selected>Select a Gender...</option>
+                  <ng-container *ngFor="let gen of genderList; trackBy: trackByFn">
+                    <option [value]="gen.Id">{{ gen.Name }}</option>
+                  </ng-container>
+                </select>
+                <div *ngIf="empFormSubmit && f.GenderId.errors" class="invalid-feedback">
+                  <span *ngIf="f.GenderId.errors.required">This field is required.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputLanguage">{{
+                  "HEADER.CONTENT.LANGUAGE" | translate
+                  }}</label>
+                <select id="formrow-inputLanguage" class="form-control" formControlName="SystemLanguageId" [ngClass]="{
+                    'is-invalid': empFormSubmit && f.SystemLanguageId.errors
+                  }">
+                  <option selected>Select a Language...</option>
+                  <ng-container *ngFor="let lan of languageList; trackBy: trackByFn">
+                    <option [value]="lan.Id">{{ lan.Name }}</option>
+                  </ng-container>
+                </select>
+                <div *ngIf="empFormSubmit && f.SystemLanguageId.errors" class="invalid-feedback">
+                  <span *ngIf="f.SystemLanguageId.errors.required">This field is required.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="formrow-address-input">{{
+              "HEADER.CONTENT.ADDRESS" | translate
+              }}</label>
+            <input type="text" class="form-control" id="formrow-address-input" formControlName="Address" />
+          </div>
+
+          <div class="mb-3">
+            <label for="formrow-Description-input">{{
+              "HEADER.CONTENT.NOTES" | translate
+              }}</label>
+            <textarea formControlName="Description" class="form-control" rows="3"
+              id="formrow-Description-input"></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputMobile">{{
+                  "HEADER.CONTENT.MOBILE" | translate
+                  }}</label>
+                <input type="text" class="form-control" id="formrow-inputMobile" formControlName="Mobile" maxlength="8"
+                  mask="00000000" />
+                <span class="text-muted">e.g "xxxxxxxx"</span>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputOfficePhone">{{
+                  "HEADER.CONTENT.OFFICEPHONE" | translate
+                  }}</label>
+                <input type="text" class="form-control" id="formrow-inputOfficePhone" formControlName="OfficePhone"
+                  maxlength="8" mask="00000000" />
+                <span class="text-muted">e.g "xxxxxxxx"</span>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputHomePhone">{{
+                  "HEADER.CONTENT.HOMEPHONE" | translate
+                  }}</label>
+                <input type="text" class="form-control" id="formrow-inputHomePhone" formControlName="HomePhone"
+                  maxlength="8" mask="00000000" />
+                <span class="text-muted">e.g "xxxxxxxx"</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="dob-input">{{
+                  "HEADER.CONTENT.DATEOFBIRTH" | translate
+                  }}</label>
+                <input class="form-control" type="date" formControlName="DateOfBirth" id="dob-input" />
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="doj-input">{{
+                  "HEADER.CONTENT.DATEOFJOIN" | translate
+                  }}</label>
+                <input class="form-control" type="date" formControlName="DateOfJoin" id="doj-input" />
+              </div>
+            </div>
+          </div>
+          <!-- <div class="mb-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck" />
+            <label class="form-check-label" for="gridCheck">
+              Check me out
+            </label>
+          </div>
+        </div> -->
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary w-md">
+            {{ "HEADER.CONTENT.SUBMIT" | translate }}
+          </button>
+        </div>
+      </form>
+      <!-- <p>
+        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+        consectetur ac, vestibulum at eros.
+      </p>
+      <p>
+        Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+      </p>
+      <p class="mb-0">
+        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
+        magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
+        ullamcorper nulla non metus auctor fringilla.
+      </p> -->
+    </div>
+  </ng-template>
+
+  <ng-template #editDataModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">{{ modalTitle }}</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-hidden="true"></button>
+    </div>
+    <div class="modal-body">
+      <form autocomplete="off" class="form-horizontal" [formGroup]="employeeEditForm" (ngSubmit)="onSubmitEdit()">
+        <div class="container-fluid">
+          <div class="mb-3">
+            <label for="formrow-name-input">{{
+              "HEADER.CONTENT.NAME" | translate
+              }}</label>
+            <input type="text" class="form-control" id="formrow-name-input" formControlName="Name" [ngClass]="{
+                'is-invalid': empFormSubmit && e.Name.errors
+              }" />
+            <div *ngIf="empFormSubmit && e.Name.errors" class="invalid-feedback">
+              <span *ngIf="e.Name.errors.required">This field is required.</span>
+            </div>
+          </div>
+
+          <br />
+
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputRoleId">{{
+                  "HEADER.CONTENT.ROLES" | translate
+                  }}</label>
+                <select id="formrow-inputRoleId" class="form-control" formControlName="SystemRoleId">
+                  <option selected>Select a Role...</option>
+                  <ng-container *ngFor="let role of roleList; trackBy: trackByFn">
+                    <option [value]="role.Id">{{ role.Name }}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+            <!-- <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputCountry">{{
+                  "HEADER.CONTENT.NATIONALITY" | translate
+                }}</label>
+                <select
+                  id="formrow-inputCountry"
+                  class="form-control"
+                  formControlName="SystemCountryId"
+                >
+                  <option selected>Select a Nationality...</option>
+                  <ng-container *ngFor="let lan of nationalityList">
+                    <option [value]="lan.Id">{{ lan.Name }}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div> -->
+
+            <!-- <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputDepartment">{{
+                  "HEADER.CONTENT.DEPARTMENT" | translate
+                }}</label>
+                <select
+                  id="formrow-inputDepartment"
+                  class="form-control"
+                  formControlName="SystemDepartmentId"
+                >
+                  <option selected>Select a Department...</option>
+                  <ng-container *ngFor="let lan of departmentList">
+                    <option [value]="lan.Id">{{ lan.Name }}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div> -->
+          </div>
+
+          <br />
+
+          <div class="row">
+            <div class="col-lg-2">
+              <div class="mb-3">
+                <label for="formrow-FileNo">{{
+                  "HEADER.CONTENT.FILENO" | translate
+                  }}</label>
+                <input type="text" class="form-control" id="formrow-FileNo" formControlName="FileNo" maxlength="5"
+                  [ngClass]="{
+                    'is-invalid': empFormSubmit && e.FileNo.errors
+                  }" />
+                <div *ngIf="empFormSubmit && e.FileNo.errors" class="invalid-feedback">
+                  <span *ngIf="e.FileNo.errors.required">This field is required.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="formrow-CivilId">{{
+                  "HEADER.CONTENT.CIVILID" | translate
+                  }}</label>
+                <input type="text" class="form-control" id="formrow-CivilId" formControlName="CivilId" maxlength="12"
+                  mask="000000000000" [ngClass]="{
+                    'is-invalid': empFormSubmit && e.CivilId.errors
+                  }" />
+                <div *ngIf="empFormSubmit && e.CivilId.errors" class="invalid-feedback">
+                  <span *ngIf="e.CivilId.errors.required">This field is required.</span>
+                </div>
+                <span class="text-muted">e.g "xxxxxxxxxxxx"</span>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="formrow-inputGender">{{
+                  "HEADER.CONTENT.GENDER" | translate
+                  }}</label>
+                <select id="formrow-inputGender" class="form-control" formControlName="SystemGenderId">
+                  <option selected>Select a Gender...</option>
+                  <ng-container *ngFor="let gen of genderList; trackBy: trackByFn">
+                    <option [value]="gen.Id">{{ gen.Name }}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputLanguage">{{
+                  "HEADER.CONTENT.LANGUAGE" | translate
+                  }}</label>
+                <select id="formrow-inputLanguage" class="form-control" formControlName="SystemLanguageId">
+                  <option selected>Select a Language...</option>
+                  <ng-container *ngFor="let lan of languageList; trackBy: trackByFn">
+                    <option [value]="lan.Id">{{ lan.Name }}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="formrow-address-input">{{
+              "HEADER.CONTENT.ADDRESS" | translate
+              }}</label>
+            <input type="text" class="form-control" id="formrow-address-input" formControlName="Address" />
+          </div>
+
+          <div class="mb-3">
+            <label for="formrow-Description-input">{{
+              "HEADER.CONTENT.NOTES" | translate
+              }}</label>
+            <textarea formControlName="Description" class="form-control" rows="3"
+              id="formrow-Description-input"></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputMobile">{{
+                  "HEADER.CONTENT.MOBILE" | translate
+                  }}</label>
+                <input type="text" class="form-control" id="formrow-inputMobile" formControlName="Mobile" maxlength="8"
+                  mask="00000000" />
+                <span class="text-muted">e.g "xxxxxxxx"</span>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputOfficePhone">{{
+                  "HEADER.CONTENT.OFFICEPHONE" | translate
+                  }}</label>
+                <input type="text" class="form-control" id="formrow-inputOfficePhone" formControlName="OfficePhone"
+                  maxlength="8" mask="00000000" />
+                <span class="text-muted">e.g "xxxxxxxx"</span>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <!-- <label
+                  for="formrow-inputHomePhone"
+                  >{{ "HEADER.CONTENT.HOMEPHONE | translate }}</label
+                > -->
+                <label for="formrow-inputHomePhone">{{
+                  "HEADER.CONTENT.HOMEPHONE" | translate
+                  }}</label>
+                <input type="text" class="form-control" id="formrow-inputHomePhone" formControlName="HomePhone"
+                  maxlength="8" mask="00000000" />
+                <span class="text-muted">e.g "xxxxxxxx"</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="dob-input">{{
+                  "HEADER.CONTENT.DATEOFBIRTH" | translate
+                  }}</label>
+                <input class="form-control" type="date" formControlName="DateOfBirth" id="dob-input" />
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="doj-input">{{
+                  "HEADER.CONTENT.DATEOFJOIN" | translate
+                  }}</label>
+                <input class="form-control" type="date" formControlName="DateOfJoin" id="doj-input" />
+              </div>
+            </div>
+          </div>
+          <!-- <div class="mb-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck" />
+            <label class="form-check-label" for="gridCheck">
+              Check me out
+            </label>
+          </div>
+        </div> -->
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary w-md">
+            {{ "HEADER.CONTENT.SUBMIT" | translate }}
+          </button>
+        </div>
+      </form>
+      <!-- <p>
+        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+        consectetur ac, vestibulum at eros.
+      </p>
+      <p>
+        Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+      </p>
+      <p class="mb-0">
+        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
+        magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
+        ullamcorper nulla non metus auctor fringilla.
+      </p> -->
+    </div>
+  </ng-template>
+
+  <ng-template #profileDataModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">
+        {{ "HEADER.CONTENT.PROFILE" | translate }} - {{ modalTitle }}
+      </h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-hidden="true"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-xl-4">
+          <div class="card overflow-hidden">
+            <div class="bg-soft bg-primary">
+              <div class="row">
+                <div class="col-7">
+                  <div class="text-primary p-3"></div>
+                </div>
+                <div class="col-5 align-self-end"></div>
+              </div>
+            </div>
+            <div class="card-body pt-0">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="avatar-md profile-user-wid mb-4">
+                    <img src="assets/images/users/avatar.png" alt="" class="img-thumbnail rounded-circle" />
+                  </div>
+                  <h5 class="font-size-15 text-truncate">
+                    {{ selectedEmployee.Name }}
+                  </h5>
+                  <!-- <p class="text-muted mb-0 text-truncate">{{selectedEmployee.Description}}</p> -->
+                </div>
+
+                <div class="col-sm-8">
+                  <div class="pt-4">
+                    <div class="row">
+                      <div class="col-6">
+                        <h5 class="font-size-15">
+                          {{
+                          userLeaveHeader.LastTakenDate | date: "dd/MM/yyyy"
+                          }}
+                        </h5>
+                        <p class="text-muted mb-0">
+                          {{ "HEADER.CONTENT.LASTTAKENDATE" | translate }}
+                        </p>
+                      </div>
+                      <div class="col-6">
+                        <h5 class="font-size-15">
+                          {{
+                          userLeaveHeader.LastReturnedDate
+                          | date: "dd/MM/yyyy"
+                          }}
+                        </h5>
+                        <p class="text-muted mb-0">
+                          {{ "HEADER.CONTENT.LASTRETURNEDDATE" | translate }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <a href="javascript: void(0);" class="btn btn-primary btn-sm">View Profile <i
+                          class="mdi mdi-arrow-right ms-1"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title mb-4">
+                {{ "HEADER.CONTENT.PERSONALINFORMATION" | translate }}
+              </h4>
+
+              <p class="text-muted mb-4">
+                {{ selectedEmployee.Description }}
+              </p>
+              <div class="table-responsive">
+                <table class="table table-nowrap mb-0">
+                  <tbody>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.FILENO" | translate }} :
+                      </th>
+                      <td>{{ selectedEmployee.FileNo }}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.CIVILID" | translate }} :
+                      </th>
+                      <td>{{ selectedEmployee.CivilId }}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.CONTACTNO" | translate }} :
+                      </th>
+                      <td>
+                        {{ selectedEmployee.Mobile }}<br />
+                        {{ selectedEmployee.HomePhone }}<br />
+                        {{ selectedEmployee.OfficePhone }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.EMAIL" | translate }} :
+                      </th>
+                      <td>{{ selectedEmployee.Email }}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.ADDRESS" | translate }} :
+                      </th>
+                      <td>
+                        {{ selectedEmployee.Address }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- end card -->
+
+          <!-- end card -->
+        </div>
+
+        <div class="col-xl-8">
+          <div class="row">
+            <div *ngFor="let stat of statData; trackBy: trackByFn" class="col-md-4">
+              <app-stat [title]="stat.title" [value]="stat.value" [icon]="stat.icon"></app-stat>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="row mb-2">
+                <div class="col-4">
+                  <h4 class="card-title mb-2">
+                    {{ "HEADER.CONTENT.LEAVEBALANCE" | translate }}
+                  </h4>
+                </div>
+                <div class="col-8">
+                  <a *ngIf="!editBalanceValue" href="javascript: void(0);" (click)="editBalance()"
+                    class="btn btn-primary btn-sm">{{ "HEADER.CONTENT.EDITLEAVEBALANCE" | translate }}</a>
+
+                  <a *ngIf="editBalanceValue" href="javascript: void(0);" (click)="updateBalance()"
+                    class="btn btn-success btn-sm">{{ "HEADER.CONTENT.UPDATELEAVEBALANCE" | translate }}</a>
+                </div>
+              </div>
+              <form class="repeater" [formGroup]="form">
+                <div class="table-responsive">
+                  <table class="table table-dark table-hover m-0">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>{{ "HEADER.CONTENT.LEAVETYPE" | translate }}</th>
+                        <th class="text-sm-end">
+                          {{ "HEADER.CONTENT.BALANCE" | translate }}
+                        </th>
+                        <!-- <th class="text-sm-end">
+                            <i class="bx bx-edit"></i>
+                          </th>
+                          <th></th> -->
+                      </tr>
+                    </thead>
+
+                    <tbody formArrayName="formlist">
+                      <tr *ngFor="let data1 of formData().controls; let i = index; trackBy: trackByFn"
+                        [formGroupName]="i">
+                        <th style="width: 1%; white-space: nowrap">
+                          {{ i + 1 }}
+                        </th>
+                        <td>
+                          {{ data1.value.Name }}
+                        </td>
+
+                        <td style="width: 15%">
+                          <div *ngIf="editBalanceValue" class="col-sm-auto text-sm-end">
+                            <input type="number" class="form-control form-control-sm" id="i" min="0"
+                              formControlName="Balance" />
+                          </div>
+                          <div *ngIf="!editBalanceValue" class="col-sm-auto text-sm-end">
+                            {{ data1.value.Balance }}
+                          </div>
+                        </td>
+
+                        <!-- <td class="text-sm-end">
+                            <a
+                              href="javascript:void(0)"
+                              ngbTooltip="Edit"
+                              (click)="openBalance(data1)"
+                              ><i class="bx bx-pencil"></i
+                            ></a>
+                          </td>
+                          <td></td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </form>
+
+              <!-- <div class="table-responsive">
+                  <table class="table table-dark mb-0">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>{{ 'HEADER.CONTENT.LEAVETYPE' | translate }}</th>
+                        <th class="text-sm-end">Balance</th>
+                        <th class="text-sm-end"><i class="bx bx-edit"></i></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of userLeaveBalance; let i = index">
+                        <th scope="row" style="width: 1%; white-space: nowrap">
+                          {{ i + 1 }}
+                        </th>
+                        <td>{{ item.Name }}</td>
+                        <td class="text-sm-end">{{ item.Balance }}</td>
+                        <td class="text-sm-end">
+                          <a
+                            href="javascript:void(0)"
+                            ngbTooltip="Edit"
+                            (click)="openEditModal(editDataModal, item)"
+                            ><i class="bx bx-pencil"></i
+                          ></a>
+
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div> -->
+
+              <!-- <ul class="verti-timeline list-unstyled">
+                  <li class="event-list active">
+                    <div class="event-timeline-dot">
+                      <i class="bx bx-right-arrow-circle bx-fade-right"></i>
+                    </div>
+                    <div class="media">
+                      <div class="me-3">
+                        <i class="bx bx-server h4 text-primary"></i>
+                      </div>
+                      <div class="media-body">
+                        <div>
+                          <h5 class="font-size-15">
+                            <a href="javascript: void(0);" class="text-dark"
+                              >Back end Developer</a
+                            >
+                          </h5>
+                          <span class="text-primary">2016 - 19</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="event-list">
+                    <div class="event-timeline-dot">
+                      <i class="bx bx-right-arrow-circle"></i>
+                    </div>
+                    <div class="media">
+                      <div class="me-3">
+                        <i class="bx bx-code h4 text-primary"></i>
+                      </div>
+                      <div class="media-body">
+                        <div>
+                          <h5 class="font-size-15">
+                            <a href="javascript: void(0);" class="text-dark"
+                              >Front end Developer</a
+                            >
+                          </h5>
+                          <span class="text-primary">2013 - 16</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="event-list">
+                    <div class="event-timeline-dot">
+                      <i class="bx bx-right-arrow-circle"></i>
+                    </div>
+                    <div class="media">
+                      <div class="me-3">
+                        <i class="bx bx-edit h4 text-primary"></i>
+                      </div>
+                      <div class="media-body">
+                        <div>
+                          <h5 class="font-size-15">
+                            <a href="javascript: void(0);" class="text-dark"
+                              >UI /UX Designer</a
+                            >
+                          </h5>
+                          <span class="text-primary">2011 - 13</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4">
+            {{ "HEADER.CONTENT.LEAVEHISTORY" | translate }}
+          </h4>
+          <div class="table-responsive">
+            <table class="table table-nowrap table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.REQUESTEDBY" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.DATEREQUESTED" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.LEAVETYPE" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.STARTDATE" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.ENDDATE" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.RETURNEDDATE" | translate }}
+                  </th>
+                  <th scope="col">{{ "HEADER.CONTENT.DAYS" | translate }}</th>
+                  <th class="text-sm-end" scope="col">
+                    {{ "HEADER.CONTENT.STATUS" | translate }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of userLeaveList; let i = index; trackBy: trackByFn">
+                  <th scope="row" style="width: 1%; white-space: nowrap">
+                    <div class="avatar-xs">
+                      <span class="avatar-title rounded-circle">
+                        {{ i + 1 }}
+                      </span>
+                    </div>
+                  </th>
+                  <td>{{ item.RequestedBy }}</td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.RequestTime | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.LeaveType }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.LeaveStarted | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.LeaveEnded | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.ReturnedDate | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.NoOfDays | number }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap" class="text-sm-end">
+                    <span [ngClass]="statusClass(item.Status)">
+                      {{ item.Status }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #changeModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">
+        {{ "HEADER.CONTENT.RESETPASSWORD" | translate }} - {{ modalTitle }}
+      </h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-hidden="true"></button>
+    </div>
+    <div class="modal-body">
+      <form class="needs-validation" name="passwordResetForm" [formGroup]="passwordResetForm"
+        (ngSubmit)="changePassword()" novalidate autocomplete="off">
+        <!-- <ngb-alert type="success" *ngIf="successmsg" [dismissible]="false"
+          >Registeration successfull.
+        </ngb-alert>
+
+        <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{
+          error
+        }}</ngb-alert> -->
+
+        <div class="mb-3">
+          <label for="formrow-password-input">{{
+            "HEADER.CONTENT.PASSWORD" | translate
+            }}</label>
+          <input type="password" class="form-control" id="formrow-password-input" formControlName="NewPassword"
+            [ngClass]="{
+              'is-invalid': resetFormSubmit && p.NewPassword.errors
+            }" />
+          <div *ngIf="resetFormSubmit && p.NewPassword.errors" class="invalid-feedback">
+            <span *ngIf="p.NewPassword.errors.required">This field is required.</span>
+            <span *ngIf="p.NewPassword.errors.minlength">Password must be at least 6 characters.</span>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="mb-3">
+            <label for="formrow-cPassword-input">{{
+              "HEADER.CONTENT.CONFIRMPASSWORD" | translate
+              }}</label>
+            <input type="password" class="form-control" id="formrow-cPassword-input" formControlName="ConfirmPassword"
+              [ngClass]="{
+                'is-invalid': resetFormSubmit && p.ConfirmPassword.errors
+              }" />
+            <div *ngIf="resetFormSubmit && p.ConfirmPassword.errors" class="invalid-feedback">
+              <span *ngIf="p.ConfirmPassword.errors.required">This field is required.</span>
+              <span *ngIf="p.ConfirmPassword.errors.mustMatch">Both passwords should be the same.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 d-grid">
+          <button class="btn btn-primary" type="submit">
+            {{ "HEADER.CONTENT.RESETPASSWORD" | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div>

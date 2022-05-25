@@ -1,0 +1,1630 @@
+<div class="container-fluid" *ngIf="hasViewAccess">
+  <app-page-title
+    title="{{ 'HEADER.CONTENT.LEAVEREQUEST' | translate }}"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="card d-print-none">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="text-sm-end">
+            <button
+              type="button"
+              class="btn btn-success btn-rounded mb-2 me-2"
+              data-target="#newDataModal"
+              data-toggle="modal"
+              (click)="openModal(newDataModal)"
+            >
+              <i class="fas fa-plus font-size-64 align-left mr-1"></i>
+              {{ "HEADER.CONTENT.ADDNEW" | translate }}
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-nowrap table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.REQUESTEDBY" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.DATEREQUESTED" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.LEAVETYPE" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.STARTDATE" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.ENDDATE" | translate }}
+                  </th>
+                  <th scope="col">
+                    {{ "HEADER.CONTENT.RETURNEDDATE" | translate }}
+                  </th>
+                  <th scope="col">{{ "HEADER.CONTENT.DAYS" | translate }}</th>
+                  <th scope="col" class="text-end">
+                    {{ "HEADER.CONTENT.STATUS" | translate }}
+                  </th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of leaveData; let i = index">
+                  <th scope="row" style="width: 1%; white-space: nowrap">
+                    <div class="avatar-xs">
+                      <span class="avatar-title rounded-circle">
+                        {{ i + 1 }}
+                      </span>
+                    </div>
+                  </th>
+                  <td>{{ item.RequestedBy }}</td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.RequestTime | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.LeaveType }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.LeaveStarted | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.LeaveEnded | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.ReturnedDate | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td
+                    style="width: 1%; white-space: nowrap"
+                    class="text-sm-end"
+                  >
+                    {{ item.NoOfDays | number }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap" class="text-end">
+                    <span [ngClass]="statusClass(item.Status)">
+                      {{ item.Status }}</span
+                    >
+                  </td>
+                  <td style="width: 1%; white-space: nowrap" class="text-end">
+                    <div
+                      *ngIf="item.Status == 'Pending'"
+                      class="col-sm-3 button-items"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-outline-danger btn-sm"
+                        (click)="cancelRequest(item)"
+                      >
+                        <i class="fas fa-trash-alt fa-lg"></i>
+                      </button>
+                    </div>
+                    <!-- <div
+                      *ngIf="item.Status == 'Pending'"
+                      class="col-sm-3 button-items"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-outline-info btn-sm"
+                        (click)="cancelRequest(item)"
+                      >
+                        <i class="fas fa-pencil-alt fa-lg"></i>
+                      </button>
+                    </div> -->
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="float-end">
+                      <a
+                        href="javascript: void(0);"
+                        (click)="
+                          openLeaveFormModal(emergencyLeaveFormModal, item)
+                        "
+                        class="btn btn-primary"
+                        style="margin-right: 10px"
+                        ><i class="fa fa-print"></i
+                      ></a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #newDataModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">{{ modalTitle }}</h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="modal.dismiss('Cross click')"
+        aria-hidden="true"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-xl-4">
+          <div class="card overflow-hidden">
+            <div class="bg-soft bg-primary">
+              <div class="row">
+                <!-- <div class="col-7">
+                  <div class="text-primary p-3"></div>
+                </div> -->
+                <div class="col-12 text-primary p-3 text-sm-end">
+                  <h5 class="font-size-15 text-truncate">
+                    {{ selectedEmployee.Name }}
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div class="card-body pt-0">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="avatar-md profile-user-wid mb-4">
+                    <img
+                      src="assets/images/users/avatar.png"
+                      alt=""
+                      class="img-thumbnail rounded-circle"
+                    />
+                  </div>
+                  <h5 class="font-size-15 text-truncate">
+                    <!-- {{ selectedEmployee.Name }} -->
+                  </h5>
+                  <!-- <p class="text-muted mb-0 text-truncate">{{selectedEmployee.Description}}</p> -->
+                </div>
+
+                <div class="col-sm-8">
+                  <div class="pt-4">
+                    <div class="row">
+                      <div class="col-6">
+                        <h5 class="font-size-15">
+                          {{
+                            userLeaveHeader.LastTakenDate | date: "dd/MM/yyyy"
+                          }}
+                        </h5>
+                        <p class="text-muted mb-0">
+                          {{ "HEADER.CONTENT.LASTTAKENDATE" | translate }}
+                        </p>
+                      </div>
+                      <div class="col-6">
+                        <h5 class="font-size-15">
+                          {{
+                            userLeaveHeader.LastReturnedDate
+                              | date: "dd/MM/yyyy"
+                          }}
+                        </h5>
+                        <p class="text-muted mb-0">
+                          Last {{ "HEADER.CONTENT.RETURNEDDATE" | translate }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <!-- <a
+                        href="javascript: void(0);"
+                        class="btn btn-primary btn-sm"
+                        >View Profile <i class="mdi mdi-arrow-right ms-1"></i
+                      ></a> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title mb-4">
+                {{ "HEADER.CONTENT.PERSONALINFORMATION" | translate }}
+              </h4>
+
+              <p class="text-muted mb-4">
+                {{ selectedEmployee.Description }}
+              </p>
+              <div class="table-responsive">
+                <table class="table table-nowrap mb-0">
+                  <tbody>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.FILENO" | translate }} :
+                      </th>
+                      <td>{{ selectedEmployee.FileNo }}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.CIVILID" | translate }} :
+                      </th>
+                      <td>{{ selectedEmployee.CivilId }}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.CONTACTNO" | translate }} :
+                      </th>
+                      <td>
+                        {{ selectedEmployee.Mobile }}<br />
+                        {{ selectedEmployee.HomePhone }}<br />
+                        {{ selectedEmployee.OfficePhone }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.EMAIL" | translate }} :
+                      </th>
+                      <td>{{ selectedEmployee.Email }}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {{ "HEADER.CONTENT.ADDRESS" | translate }} :
+                      </th>
+                      <td>
+                        {{ selectedEmployee.Address }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- end card -->
+
+          <!-- end card -->
+        </div>
+
+        <div class="col-xl-8">
+          <div class="row">
+            <div *ngFor="let stat of statData" class="col-md-4">
+              <app-stat
+                [title]="stat.title"
+                [value]="stat.value"
+                [icon]="stat.icon"
+              ></app-stat>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="row mb-2">
+                <h4 class="card-title mb-2">
+                  {{ "HEADER.CONTENT.LEAVEBALANCE" | translate }}
+                </h4>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-sm table-dark table-hover m-0">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>{{ "HEADER.CONTENT.LEAVETYPE" | translate }}</th>
+                      <th class="text-sm-end">
+                        {{ "HEADER.CONTENT.BALANCE" | translate }}
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let data1 of userLeaveBalance; let i = index">
+                      <th style="width: 1%; white-space: nowrap">
+                        {{ i + 1 }}
+                      </th>
+                      <td>
+                        {{ data1.Name }}
+                      </td>
+
+                      <td style="width: 15%">
+                        {{ data1.Balance }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <form
+                autocomplete="off"
+                class="form-horizontal"
+                [formGroup]="leaveForm"
+                (ngSubmit)="onSubmit()"
+              >
+                <div class="container-fluid">
+                  <!-- <div class="mb-3">
+            <label for="formrow-name-input">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="formrow-name-input"
+              formControlName="Name"
+              [ngClass]="{
+                'is-invalid': empFormSubmit && f.Name.errors
+              }"
+            />
+            <div
+              *ngIf="empFormSubmit && f.Name.errors"
+              class="invalid-feedback"
+            >
+              <span *ngIf="f.Name.errors.required"
+                >This field is required.</span
+              >
+            </div>
+          </div> -->
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <div class="mb-3">
+                        <label for="formrow-inputLeaveTypeId">{{
+                          "HEADER.CONTENT.LEAVETYPE" | translate
+                        }}</label>
+                        <select
+                          id="formrow-inputLeaveTypeId"
+                          class="form-control"
+                          formControlName="LeaveTypeId"
+                        >
+                          <option selected>
+                            Select a
+                            {{ "HEADER.CONTENT.LEAVETYPE" | translate }}...
+                          </option>
+                          <ng-container *ngFor="let role of userLeaveBalance">
+                            <option [value]="role.Id">{{ role.Name }}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <label for="example-datef-input">{{
+                        "HEADER.CONTENT.DATEFROM" | translate
+                      }}</label>
+
+                      <input
+                        class="form-control"
+                        type="date"
+                        id="example-datef-input"
+                        formControlName="LeaveStarted"
+                      />
+                    </div>
+                    <div class="col-sm-3">
+                      <label for="example-datet-input">{{
+                        "HEADER.CONTENT.DATETO" | translate
+                      }}</label>
+                      <input
+                        class="form-control"
+                        type="date"
+                        id="example-datet-input"
+                        formControlName="LeaveEnded"
+                      />
+                    </div>
+                    <div class="col-sm-3">
+                      <br />
+                      <br />
+
+                      <!-- <div class="form-check form-check-success mb-3">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="formCheckcolor2"
+                          formControlName="IsLocalVacation"
+                          checked
+                        />
+                      </div> -->
+
+                      <div class="form-check form-switch-md form-switch mb-3">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="flexSwitchCheckDefault"
+                          formControlName="IsLocalVacation"
+                        />
+                        <label
+                          class="form-check-label"
+                          for="flexSwitchCheckDefault"
+                          >{{
+                            "HEADER.CONTENT.LOCALVACATION" | translate
+                          }}</label
+                        >
+                      </div>
+
+                      <!-- <div
+                        class="
+                          form-check form-checkbox-outline form-check-success
+                          mb-3
+                        "
+                      >
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="customCheckcolor2"
+                          formControlName="IsLocalVacation"
+                        />
+                        <label class="form-check-label" for="customCheckcolor2">
+                          {{ 'HEADER.CONTENT.LOCALVACATION' | translate }}
+                        </label>
+                      </div> -->
+                    </div>
+                  </div>
+
+                  <br />
+
+                  <!-- <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="formrow-email-input">Email</label>
+
+                <input
+                  type="email"
+                  class="form-control"
+                  id="formrow-email-input"
+                  formControlName="Email"
+                  [readonly]="editMode"
+                  [ngClass]="{
+                    'is-invalid': empFormSubmit && f.Email.errors
+                  }"
+                />
+                <div
+                  *ngIf="empFormSubmit && f.Email.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="f.Email.errors.required"
+                    >This field is required.</span
+                  >
+                  <span *ngIf="f.Email.errors.pattern"
+                    >Please enter a valid email.</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4" *ngIf="!editMode">
+              <div class="mb-3">
+                <label for="formrow-password-input">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="formrow-password-input"
+                  formControlName="Password"
+                  [ngClass]="{
+                    'is-invalid': empFormSubmit && f.Password.errors
+                  }"
+                />
+                <div
+                  *ngIf="empFormSubmit && f.Password.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="f.Password.errors.required"
+                    >This field is required.</span
+                  >
+                  <span *ngIf="f.Password.errors.minlength"
+                    >Password must be at least 6 characters.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4" *ngIf="!editMode">
+              <div class="mb-3">
+                <label for="formrow-cPassword-input">Confirm Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="formrow-cPassword-input"
+                  formControlName="ConfirmPassword"
+                  [ngClass]="{
+                    'is-invalid': empFormSubmit && f.ConfirmPassword.errors
+                  }"
+                />
+                <div
+                  *ngIf="empFormSubmit && f.ConfirmPassword.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="f.ConfirmPassword.errors.required"
+                    >This field is required.</span
+                  >
+                  <span *ngIf="f.ConfirmPassword.errors.mustMatch"
+                    >Both passwords should be the same.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br />
+
+          <div class="col-lg-5">
+            <div class="mb-3">
+              <label for="formrow-inputRoleId">Role</label>
+              <select
+                id="formrow-inputRoleId"
+                class="form-control"
+                formControlName="SystemRoleId"
+              >
+                <option selected>Select a Role...</option>
+                <ng-container *ngFor="let role of roleList">
+                  <option [value]="role.Id">{{ role.Name }}</option>
+                </ng-container>
+              </select>
+            </div>
+          </div>
+
+          <br />
+
+          <div class="row">
+            <div class="col-lg-2">
+              <div class="mb-3">
+                <label for="formrow-FileNo">{{ 'HEADER.CONTENT.FILENO' | translate }}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="formrow-FileNo"
+                  formControlName="FileNo"
+                  [ngClass]="{
+                    'is-invalid': empFormSubmit && f.FileNo.errors
+                  }"
+                />
+                <div
+                  *ngIf="empFormSubmit && f.FileNo.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="f.FileNo.errors.required"
+                    >This field is required.</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="formrow-CivilId">{{ 'HEADER.CONTENT.CIVILID' | translate }}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="formrow-CivilId"
+                  formControlName="CivilId"
+                  mask="000000000000"
+                  [ngClass]="{
+                    'is-invalid': empFormSubmit && f.CivilId.errors
+                  }"
+                />
+                <div
+                  *ngIf="empFormSubmit && f.CivilId.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="f.CivilId.errors.required"
+                    >This field is required.</span
+                  >
+                </div>
+                <span class="text-muted">e.g "xxxxxxxxxxxx"</span>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="formrow-inputGender">Gender</label>
+                <select
+                  id="formrow-inputGender"
+                  class="form-control"
+                  formControlName="SystemGenderId"
+                >
+                  <option selected>Select a Gender...</option>
+                  <ng-container *ngFor="let gen of genderList">
+                    <option [value]="gen.Id">{{ gen.Name }}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputLanguage">Language</label>
+                <select
+                  id="formrow-inputLanguage"
+                  class="form-control"
+                  formControlName="SystemLanguageId"
+                >
+                  <option selected>Select a Language...</option>
+                  <ng-container *ngFor="let lan of languageList">
+                    <option [value]="lan.Id">{{ lan.Name }}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="formrow-{{ 'HEADER.CONTENT.ADDRESS' | translate }}-input">{{ 'HEADER.CONTENT.ADDRESS' | translate }}</label>
+            <input
+              type="text"
+              class="form-control"
+              id="formrow-{{ 'HEADER.CONTENT.ADDRESS' | translate }}-input"
+              formControlName="{{ 'HEADER.CONTENT.ADDRESS' | translate }}"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="formrow-Description-input">Notes</label>
+            <textarea
+              formControlName="Description"
+              class="form-control"
+              rows="3"
+              id="formrow-Description-input"
+            ></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputMobile">Mobile</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="formrow-inputMobile"
+                  formControlName="Mobile"
+                  mask="00000000"
+                />
+                <span class="text-muted">e.g "xxxxxxxx"</span>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputOfficePhone">Office Phone</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="formrow-inputOfficePhone"
+                  formControlName="OfficePhone"
+                  mask="00000000"
+                />
+                <span class="text-muted">e.g "xxxxxxxx"</span>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="formrow-inputHomePhone">Home Phone</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="formrow-inputHomePhone"
+                  formControlName="HomePhone"
+                  mask="00000000"
+                />
+                <span class="text-muted">e.g "xxxxxxxx"</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="dob-input">Date of Birth</label>
+                <input
+                  class="form-control"
+                  type="date"
+                  formControlName="DateOfBirth"
+                  id="dob-input"
+                />
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="doj-input">Date of Join</label>
+                <input
+                  class="form-control"
+                  type="date"
+                  formControlName="DateOfJoin"
+                  id="doj-input"
+                />
+              </div>
+            </div>
+          </div> -->
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary w-md">
+                    {{ "HEADER.CONTENT.SUBMIT" | translate }}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- <ng-template #leaveFormModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">{{ modalTitle }}</h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="modal.dismiss('Cross click')"
+        aria-hidden="true"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="showReport" class="row">
+        <div>
+          <div *ngIf="loading">
+            <div>
+              <div class="spinner-chase">
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+  <!-- <div *ngIf="showReport"> -->
+  <ng-container *ngIf="showReport">
+    <div class="card" id="reportData">
+      <div class="card-body">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <div>
+                <div class="invoice-title">
+                  <!-- <h4 class="float-end font-size-16">Order # 12345</h4> -->
+                  <div class="mb-4">
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <img
+                          src="assets/images/MEW-logo1.png"
+                          alt="logo"
+                          height="100"
+                        />
+                      </div>
+                      <div class="col-sm-8">
+                        <div class="text-xl-center">
+                          <h1>{{ "HEADER.CONTENT.KUWAIT" | translate }}</h1>
+                          <h1>{{ "HEADER.CONTENT.MEW" | translate }}</h1>
+                          <h2>
+                            {{ "HEADER.CONTENT.DEPARTMENTNAME" | translate }}
+                          </h2>
+                          <hr />
+                          <!-- <h1>Minstry of Electricity and Water</h1> -->
+                          <h3>
+                            {{
+                              "HEADER.CONTENT.EMPLOYEELEAVEREQUEST" | translate
+                            }}
+                          </h3>
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div class="d-print-none">
+                          <div class="float-end">
+                            <a
+                              href="javascript:window.print()"
+                              class="btn btn-success"
+                              style="margin-right: 10px"
+                              ><i class="fa fa-print"></i
+                            ></a>
+                            <a
+                              href="javascript: void(0);"
+                              (click)="createPDF()"
+                              class="btn btn-primary"
+                              style="margin-right: 10px"
+                              ><i class="fa fas fa-file-pdf"></i
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="text-xl-left">
+                          السيد / مدير ادارة شؤون العاملين المحترم
+                          <br />
+                          بواسطة السيد \ مدير ادارة مركز الحاسب الالي المحترم
+                          <br />
+                          تحية طيبة وبعد ،،،
+                          <br />
+
+                          ارجو الموافقه على منحي اجازه دوريه / خاصة غير مدفوعة
+                          الراتب لمدة
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div>
+                          <div class="text-xl-right">
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th scope="col">
+                                    {{
+                                      "HEADER.CONTENT.DATEREQUESTED" | translate
+                                    }}
+                                  </th>
+                                  <th scope="col">
+                                    {{ "HEADER.CONTENT.FILENO" | translate }}
+                                  </th>
+                                  <th scope="col">
+                                    {{ "HEADER.CONTENT.CIVILID" | translate }}
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    {{
+                                      selectedLeaveData.RequestTime
+                                        | date: "dd/MM/yyyy"
+                                    }}
+                                  </td>
+                                  <td>
+                                    {{ selectedLeaveData.FileNo }}
+                                  </td>
+                                  <td>
+                                    {{ selectedLeaveData.CivilId }}
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-8">
+                        <div hidden></div>
+                      </div>
+                      <div class="col-sm-4">
+                        <table class="table table-bordered">
+                          <tbody>
+                            <tr>
+                              <td style="width: 1%; white-space: nowrap">
+                                <h6>{{ selectedLeaveData.NoOfDays }}</h6>
+                              </td>
+                              <td style="width: 1%; white-space: nowrap">
+                                <h6>اعتبارا من</h6>
+                              </td>
+                              <td style="width: 1%; white-space: nowrap">
+                                <h6>
+                                  {{
+                                    selectedLeaveData.LeaveStarted
+                                      | date: "dd/MM/yyyy"
+                                  }}
+                                </h6>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <table class="table table-bordered table-dark">
+                        <thead>
+                          <tr>
+                            <th scope="col">اسم الموظف</th>
+                            <th scope="col">الادارة</th>
+                            <th scope="col">الجنسيه</th>
+                            <th scope="col">تاريخ التعين</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td style="width: 1%; white-space: nowrap">
+                              <div class="text-white">
+                                {{ selectedLeaveData.RequestedFor }}
+                              </div>
+                            </td>
+                            <td style="width: 1%; white-space: nowrap">
+                              <div class="text-white">
+                                {{ selectedLeaveData.Department }}
+                              </div>
+                            </td>
+                            <td style="width: 1%; white-space: nowrap">
+                              <div class="text-white">
+                                {{ selectedLeaveData.Nationality }}
+                              </div>
+                            </td>
+                            <td style="width: 1%; white-space: nowrap">
+                              <div class="text-white">
+                                {{ selectedLeaveData.DateOfJoin }}
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div>
+                    <br />
+                    <div>ملاحظات :</div>
+                    <br />
+                    <div>* ساقضي اجازتي داخل الكويت</div>
+                    <br />
+                    <div>وسيكون عنواني كالاتي</div>
+                    <br />
+                    <div>تقدم الاجازه قبل بدء موعدها بحوالي شهرين</div>
+                    <br />
+                    <div>
+                      على الاقل التزاما بالتعميم 1/84 وفي حالة تقديمها في غير
+                      الموعد المقرر لايحق للموظف المطالبه وتدفع حسب الطرق
+                      المالية المتبعة
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <div hidden></div>
+                    </div>
+                    <div class="col-sm-4">
+                      <table class="table table-bordered">
+                        <tbody>
+                          <tr>
+                            <td style="width: 1%; white-space: nowrap">
+                              <div>توقيع</div>
+                            </td>
+                            <td style="width: 20%; white-space: nowrap">
+                              <div></div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div>
+                    <br />
+                    <div>
+                      * يعبا هذا الطلب عن طريق سكرتير القسم المختص من قبل صاحب
+                      الشان
+                    </div>
+                    <br />
+                    <div>
+                      * الاجاره مدرجة في برنامج تحديد الاجازات المعد من قبل
+                      القسم
+                    </div>
+                    <br />
+                    <div>لديه استراحه اسبوعية يوم الموافق من</div>
+                    <br />
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-6">توقيع المسئول المباشر</div>
+                    <div class="col-sm-6 text-end">اعتماد مدير الاداره</div>
+                    <br /><br /><br />
+                  </div>
+                  <!-- <div class="card">
+              <div class="card-body">
+                <div
+                  *ngFor="let item of leaveReportResult"
+                  class="table-responsive mb-5"
+                  style="overflow-x: hidden"
+                >
+                  <table class="table table-bordered">
+                    <tr>
+                      <th scope="col">{{ 'HEADER.CONTENT.LEAVETYPE' | translate }}</th>
+                      <th class="text-end" scope="col">Date From</th>
+                      <th class="text-end" scope="col">{{ 'HEADER.CONTENT.DATETO' | translate }}</th>
+                      <th class="text-end" scope="col">Days</th>
+                      <th class="text-end" scope="col">Status</th>
+                      <th class="text-end" scope="col">Requested</th>
+                      <th class="text-end" scope="col">Approved</th>
+                      <th class="text-end" scope="col">Rejected</th>
+                      <th class="text-end" scope="col">Canceled</th>
+                      <th class="text-end" scope="col">Returned</th>
+                      <th class="text-end" scope="col">Late Days</th>
+                    </tr>
+                    <ng-container>
+                      <tr>
+                        <td colspan="11">
+                          <div class="row bg-primary bg-softer">
+                            <div class="col-sm-12">
+                              <h3>{{ item.name }}</h3>
+                            </div>
+                            <div class="col-sm-2">
+                              <h6>{{ 'HEADER.CONTENT.FILENO' | translate }}: {{ item.fNo }}</h6>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6>{{ 'HEADER.CONTENT.CIVILID' | translate }}: {{ item.cId }}</h6>
+                            </div>
+                            <div class="col-sm-2">
+                              <h6>Mobile: {{ item.mobile }}</h6>
+                            </div>
+                            <div class="col-sm-2">
+                              <h6>Office Phone: {{ item.oNo }}</h6>
+                            </div>
+                            <div class="col-sm-2">
+                              <h6>Home Phone: {{ item.hNo }}</h6>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let value of item.values">
+                        <td style="width: 1%; white-space: nowrap">
+                          {{ value.LeaveType }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.LeaveStarted | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.LeaveEnded | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.NoOfDays | number }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.Status }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.RequestTime | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.ApprovedTime | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.RejectedTime | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.CanceledTime | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.ReturnedDate | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.DelayedDays | number }}
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </table>
+                </div>
+              </div>
+            </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- </div>
+      </ng-template> -->
+      </div>
+    </div>
+    <!-- </div> -->
+  </ng-container>
+
+  <ng-template #emergencyLeaveFormModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">{{ modalTitle }}</h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="modal.dismiss('Cross click')"
+        aria-hidden="true"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="showReport" class="row">
+        <div>
+          <div *ngIf="loading">
+            <div>
+              <div class="spinner-chase">
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12" id="reportData">
+          <div class="card">
+            <div class="card-body">
+              <div>
+                <div class="invoice-title">
+                  <!-- <h4 class="float-end font-size-16">Order # 12345</h4> -->
+                  <div class="mb-4">
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <img
+                          src="assets/images/MEW-logo1.png"
+                          alt="logo"
+                          height="100"
+                        />
+                      </div>
+                      <div class="col-sm-8">
+                        <div class="text-xl-center">
+                          <h1>{{ "HEADER.CONTENT.KUWAIT" | translate }}</h1>
+                          <h1>{{ "HEADER.CONTENT.MEW" | translate }}</h1>
+                          <h2>
+                            {{ "HEADER.CONTENT.DEPARTMENTNAME" | translate }}
+                          </h2>
+                          <hr />
+                          <!-- <h1>Minstry of Electricity and Water</h1> -->
+                          <h3>طلب إجازة طارئة</h3>
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div class="d-print-none">
+                          <div class="float-end">
+                            <a
+                              href="javascript:window.print()"
+                              class="btn btn-success"
+                              style="margin-right: 10px"
+                              ><i class="fa fa-print"></i
+                            ></a>
+                            <a
+                              href="javascript: void(0);"
+                              (click)="createPDF()"
+                              class="btn btn-primary"
+                              style="margin-right: 10px"
+                              ><i class="fa fas fa-file-pdf"></i
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+
+                <div class="card">
+                  <div class="card-body">
+                    <h5>السيد / مدير ادارة شؤون العاملين المحترم</h5>
+                    <br />
+                    <h5>تحية طيبة وبعد</h5>
+                    <br />
+                    <h5>
+                      لقد تغيبت عن مقر عملي يوم أمس : الموافق : 1899/12/30
+                    </h5>
+                    <br />
+                    <h5>
+                      لذا ، أرجو التكرم بالموافقة على احتساب هذا اليوم إجازة
+                      طارئة
+                    </h5>
+                    <br />
+                    <h5>مع أطيب التمنيات،،،</h5>
+
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <h5>مقدم الطلب :-</h5>
+                          <table class="table table-bordered table-dark">
+                            <thead>
+                              <tr>
+                                <th scope="col">اسم الموظف</th>
+                                <th scope="col">الادارة</th>
+                                <th scope="col">الجنسيه</th>
+                                <th scope="col">
+                                  {{
+                                    "HEADER.CONTENT.DATEREQUESTED" | translate
+                                  }}
+                                </th>
+                                <th scope="col">
+                                  {{ "HEADER.CONTENT.FILENO" | translate }}
+                                </th>
+                                <th scope="col">
+                                  {{ "HEADER.CONTENT.CIVILID" | translate }}
+                                </th>
+                                <th>القسم</th>
+                                <th scope="col">تاريخ التعين</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td style="width: 1%; white-space: nowrap">
+                                  <h5 class="text-white">
+                                    {{ selectedLeaveData.RequestedFor }}
+                                  </h5>
+                                </td>
+                                <td style="width: 1%; white-space: nowrap">
+                                  <h6 class="text-white">
+                                    {{ selectedLeaveData.Department }}
+                                  </h6>
+                                </td>
+                                <td style="width: 1%; white-space: nowrap">
+                                  <h5 class="text-white">
+                                    {{ selectedLeaveData.Nationality }}
+                                  </h5>
+                                </td>
+                                <td style="width: 1%; white-space: nowrap">
+                                  <h5 class="text-white">
+                                    {{
+                                      selectedLeaveData.RequestTime
+                                        | date: "dd/MM/yyyy"
+                                    }}
+                                  </h5>
+                                </td>
+                                <td style="width: 1%; white-space: nowrap">
+                                  <h5 class="text-white">
+                                    {{ selectedLeaveData.FileNo }}
+                                  </h5>
+                                </td>
+                                <td style="width: 1%; white-space: nowrap">
+                                  <h6 class="text-white">
+                                    {{ selectedLeaveData.CivilId }}
+                                  </h6>
+                                </td>
+                                <td style="width: 1%; white-space: nowrap">
+                                  <span>_____________________</span>
+                                </td>
+                                <td style="width: 1%; white-space: nowrap">
+                                  <h6 class="text-white">
+                                    {{
+                                      selectedLeaveData.LeaveStarted
+                                        | date: "dd/MM/yyyy"
+                                    }}
+                                  </h6>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card">
+                    <div class="card-body">
+                      <div>
+                        <br />
+                        <p>السيد\ مدير إدارة شئون العاملين المحترم</p>
+                        <br />
+                        <p>تحية طيبة وبعد</p>
+                        <br />
+                        <p>أرجو اموافقة على إحتساب هذا ايوم إجازة طارئة</p>
+                        <br />
+                        <p>مع أطيب اتمنيات....</p>
+                      </div>
+
+                      <br /><br /><br />
+
+                      <div class="row">
+                        <div class="col-sm-6">توقيع المسئول المباشر</div>
+                        <div class="col-sm-6 text-end">
+                          مدير إدارة مركز الحاسب الآلي
+                        </div>
+                        <br /><br /><br />
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="card">
+              <div class="card-body">
+                <div
+                  *ngFor="let item of leaveReportResult"
+                  class="table-responsive mb-5"
+                  style="overflow-x: hidden"
+                >
+                  <table class="table table-bordered">
+                    <tr>
+                      <th scope="col">{{ 'HEADER.CONTENT.LEAVETYPE' | translate }}</th>
+                      <th class="text-end" scope="col">Date From</th>
+                      <th class="text-end" scope="col">{{ 'HEADER.CONTENT.DATETO' | translate }}</th>
+                      <th class="text-end" scope="col">Days</th>
+                      <th class="text-end" scope="col">Status</th>
+                      <th class="text-end" scope="col">Requested</th>
+                      <th class="text-end" scope="col">Approved</th>
+                      <th class="text-end" scope="col">Rejected</th>
+                      <th class="text-end" scope="col">Canceled</th>
+                      <th class="text-end" scope="col">Returned</th>
+                      <th class="text-end" scope="col">Late Days</th>
+                    </tr>
+                    <ng-container>
+                      <tr>
+                        <td colspan="11">
+                          <div class="row bg-primary bg-softer">
+                            <div class="col-sm-12">
+                              <h3>{{ item.name }}</h3>
+                            </div>
+                            <div class="col-sm-2">
+                              <h6>{{ 'HEADER.CONTENT.FILENO' | translate }}: {{ item.fNo }}</h6>
+                            </div>
+                            <div class="col-sm-3">
+                              <h6>{{ 'HEADER.CONTENT.CIVILID' | translate }}: {{ item.cId }}</h6>
+                            </div>
+                            <div class="col-sm-2">
+                              <h6>Mobile: {{ item.mobile }}</h6>
+                            </div>
+                            <div class="col-sm-2">
+                              <h6>Office Phone: {{ item.oNo }}</h6>
+                            </div>
+                            <div class="col-sm-2">
+                              <h6>Home Phone: {{ item.hNo }}</h6>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let value of item.values">
+                        <td style="width: 1%; white-space: nowrap">
+                          {{ value.LeaveType }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.LeaveStarted | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.LeaveEnded | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.NoOfDays | number }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.Status }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.RequestTime | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.ApprovedTime | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.RejectedTime | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.CanceledTime | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.ReturnedDate | date: "dd/MM/yyyy" }}
+                        </td>
+                        <td
+                          class="text-end"
+                          style="width: 1%; white-space: nowrap"
+                        >
+                          {{ value.DelayedDays | number }}
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </table>
+                </div>
+              </div>
+            </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- </div>
+  </ng-template> -->
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- <app-loader></app-loader> -->
+
+  <!-- <div class="container-fluid">
+  <app-page-title
+    title="Calendar"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="app-calendar">
+          <full-calendar [options]="calendarOptions"></full-calendar>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+  <!-- {{ 'HEADER.CONTENT.ADDNEW' | translate }} Event MODAL -->
+  <!-- <ng-template #modalShow let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-title">{{ 'HEADER.CONTENT.ADDNEW' | translate }} Event</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="closeEventModal()"
+    ></button>
+  </div>
+  <div class="modal-body p-4">
+    <form (ngSubmit)="saveEvent()" [formGroup]="formData">
+      <div class="row">
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="control-label">Event Name</label>
+            <input
+              class="form-control"
+              placeholder="Insert Event Name"
+              type="text"
+              name="title"
+              formControlName="title"
+              [ngClass]="{ 'is-invalid': submitted && form.title.errors }"
+            />
+            <div
+              *ngIf="submitted && form.title.errors"
+              class="invalid-feedback"
+            >
+              <span *ngIf="form.title.errors.required"
+                >This value is required.</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="control-label">Category</label>
+            <select
+              class="form-control"
+              name="category"
+              formControlName="category"
+              [ngClass]="{ 'is-invalid': submitted && form.category.errors }"
+            >
+              <option
+                *ngFor="let option of category"
+                value="{{ option.value }}"
+              >
+                {{ option.name }}
+              </option>
+            </select>
+            <div
+              *ngIf="submitted && form.category.errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="form.category.errors.required">
+                This value is required
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-end mt-2">
+        <button
+          type="button"
+          class="btn btn-light me-1"
+          (click)="closeEventModal()"
+        >
+          Close
+        </button>
+        <button type="{{ 'HEADER.CONTENT.SUBMIT' | translate }}" class="btn btn-success" id="btn-save-event">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template> -->
+  <!-- end modal-->
+
+  <!-- Edit event modal -->
+  <!-- <ng-template #editmodalShow let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Edit Event</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-hidden="true"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body p-4">
+    <form [formGroup]="formEditData" (ngSubmit)="editEventSave()">
+      <div class="row">
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="control-label">Event name</label>
+            <input
+              class="form-control"
+              placeholder="Insert Event Name"
+              type="text"
+              name="editTitle"
+              formControlName="editTitle"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="control-label">Event category</label>
+            <select
+              class="form-control"
+              name="ecategory"
+              formControlName="editCategory"
+              required
+            >
+              <option
+                *ngFor="let option of category"
+                value="{{ option.value }}"
+              >
+                {{ option.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-6">
+          <button
+            type="button"
+            class="btn btn-danger delete-event ms-1"
+            (click)="confirm()"
+          >
+            Delete
+          </button>
+        </div>
+        <div class="col-6 text-end">
+          <button
+            type="button"
+            class="btn btn-light"
+            (click)="modal.dismiss('Close')"
+          >
+            Close
+          </button>
+          <button type="{{ 'HEADER.CONTENT.SUBMIT' | translate }}" class="btn btn-success ms-1">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template> -->
+</div>
+<div class="container-fluid" *ngIf="!hasViewAccess">
+  <!-- <app-page403></app-page403> -->
+</div>

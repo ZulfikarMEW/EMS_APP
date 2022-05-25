@@ -1,0 +1,72 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Search Employee</h4>
+
+          <div *ngFor="let row of columnNamesList | async" class="columns">
+            <label><input type="checkbox" />{{ row.Name }}</label
+            ><br />
+          </div>
+
+          <!-- <form
+            class="form-horizontal"
+            [formGroup]="filterForm"
+            (ngSubmit)="onSubmit()"
+          >
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="mb-3">
+                  <label for="formrow-inputName">Name</label>
+                  <input
+                    type="search"
+                    class="form-control"
+                    formControlName="Name"
+                    id="formrow-inputName"
+                  />
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="mb-3">
+                  <label for="formrow-inputCivilId">Civil Id</label>
+                  <input
+                    type="search"
+                    class="form-control"
+                    formControlName="CivilId"
+                    id="formrow-inputCivilId"
+                  />
+                </div>
+              </div>
+
+              <div class="col-lg-2">
+                <div class="mb-3">
+                  <label for="formrow-inputFileNo">File No</label>
+                  <input
+                    type="search"
+                    class="form-control"
+                    formControlName="FileNo"
+                    id="formrow-inputFileNo"
+                  />
+                </div>
+              </div>
+
+              <div class="col-lg-2">
+                <div class="mb-3">
+                  <label for="formrow-inputFileNo text-muted"
+                    ><span>.</span>
+                  </label>
+                  <div>
+                    <button type="submit" class="btn btn-primary w-md">
+                      Search
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

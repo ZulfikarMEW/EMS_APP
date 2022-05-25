@@ -1,0 +1,267 @@
+<div class="container-fluid">
+  <app-page-title title="{{ 'HEADER.CONTENT.JOBTITLE' | translate }}" [breadcrumbItems]="breadCrumbItems">
+  </app-page-title>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body bg-info bg-soft">
+          <div class="row">
+            <div class="col-sm-10">
+              <h4 class="card-title">Filter</h4>
+            </div>
+            <div class="col-sm-2 text-sm-end">
+              <div class="button-items">
+                <button type="button" class="btn btn-outline-info btn-sm" (click)="isCollapsed = !isCollapsed">
+                  <i class="bx bx-filter font-size-16"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="collapse" id="collapseExample" [ngbCollapse]="isCollapsed">
+            <div class="bg-info bg-soft mb-0">
+              <app-personal-data-filter (outParams)="getParams($event)"></app-personal-data-filter>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-10">
+              <h4 class="card-title">
+                {{ "HEADER.CONTENT.JOBTITLE" | translate }}
+              </h4>
+            </div>
+            <div class="col-sm-2 text-sm-end">
+              <!-- <button
+                type="button"
+                class="btn btn-success btn-rounded mb-2 me-2"
+                data-target="#dataModal"
+                data-toggle="modal"
+                (click)="openModal(dataModal)"
+              >
+                <i class="fas fa-plus font-size-64 align-left mr-1"></i>
+                {{ "HEADER.CONTENT.ADDNEW" | translate }}
+              </button> -->
+            </div>
+
+            <br />
+
+            <div class="col-sm-12">
+              <ngb-progressbar *ngIf="isLoading" [value]="100" [striped]="true" [animated]="true" height="4px"
+                type="info"></ngb-progressbar>
+            </div>
+          </div>
+          <!-- <p class="card-title-desc">
+            Add <code>.table-bordered</code> for borders on all sides of the
+            table and cells.
+          </p> -->
+
+          <div class="table-responsive">
+            <table class="table table-bordered mb-0">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th style="width: 1%; white-space: nowrap">
+                    {{ "HEADER.CONTENT.FILENO" | translate }}
+                  </th>
+                  <th>{{ "HEADER.CONTENT.NAME" | translate }}</th>
+                  <th>{{ "HEADER.CONTENT.CIVILID" | translate }}</th>
+                  <th></th>
+                  <!-- <th></th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of personalDataList; let i = index; trackBy: trackByFn">
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="avatar-xs">
+                      <span class="avatar-title rounded-circle">
+                        {{ i + 1 }}
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    {{ item.FileNo }}
+                  </td>
+                  <td style="font-size: medium; font-weight: bold">
+                    {{ item.Name }}
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    {{ item.CivilIdNo }}
+                  </td>
+                  <!-- <td style="font-size: medium; font-weight: bold">
+                    {{ item.EndValue }}
+                  </td> -->
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="text-sm-end">
+                      <ul class="list-inline font-size-15 contact-links mb-0">
+                        <li class="list-inline-item px-2">
+                          <!-- <button
+                            type="button"
+                            class="btn btn-success btn-rounded mb-2 me-2"
+                            data-target="#dataModal"
+                            data-toggle="modal"
+                            (click)="openModal(dataModal)"
+                          >
+                            <i
+                              class="fas fa-plus font-size-64 align-left mr-1"
+                            ></i>
+                            {{ "HEADER.CONTENT.ADDNEW" | translate }}
+                          </button> -->
+                          <!-- <a
+                            class="btn btn-rounded btn-info"
+                            href="javascript:void(0)"
+                            ngbTooltip="{{
+                              'HEADER.CONTENT.ADDNEW' | translate
+                            }}"
+                            (click)="openHistoryModal(historyModal, item)"
+                            ><i
+                              class="fas fa-list-ul text-white font-size-64"
+                            ></i
+                          ></a> -->
+                          <!-- </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td style="width: 1%; white-space: nowrap">
+                    <div class="text-sm-end">
+                      <ul class="list-inline font-size-15 contact-links mb-0">
+                        <li class="list-inline-item px-2"> -->
+                          <a class="btn btn-rounded btn-success" href="javascript:void(0)" ngbTooltip="{{
+                              'HEADER.CONTENT.ADDNEW' | translate
+                            }}" (click)="openModal(dataModal, item)"><i
+                              class="fas fa-plus text-white font-size-64"></i></a>
+                          <a class="btn btn-rounded btn-info" href="javascript:void(0)" ngbTooltip="{{
+                              'HEADER.CONTENT.HISTORY' | translate
+                            }}" (click)="openHistoryModal(historyModal, item)"><i
+                              class="fas fa-list-ul text-white font-size-64"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #dataModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">
+        {{ "HEADER.CONTENT.JOBTITLE" | translate }}
+      </h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-hidden="true"></button>
+    </div>
+    <div class="modal-body">
+      <form autocomplete="off" class="form-horizontal" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="mb-1">
+                <label for="MasterJobTitleId">{{
+                  "HEADER.CONTENT.JOBTITLE" | translate
+                  }}</label>
+
+                <ng-select id="MasterJobTitleId" formControlName="MasterJobTitleId" (click)="fetchMasterData()">
+                  <ng-option *ngFor="let row of masterData; trackBy: trackByFn" [value]="row.Id">{{
+                    row.Description
+                    }}</ng-option>
+                </ng-select>
+
+                <div *ngIf="formSubmit && f.MasterJobTitleId.errors" class="invalid-feedback">
+                  <span *ngIf="f.MasterJobTitleId.errors.required">This field is required.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-1">
+                <label for="DateAffected">{{
+                  "HEADER.CONTENT.DATEAFFECTED" | translate
+                  }}</label>
+                <input type="date" class="form-control form-control-sm" id="DateAffected" formControlName="DateAffected"
+                  [ngClass]="{
+                    'is-invalid': formSubmit && f.DateAffected.errors
+                  }" />
+                <div *ngIf="formSubmit && f.DateAffected.errors" class="invalid-feedback">
+                  <span *ngIf="f.DateAffected.errors.required">This field is required.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="mb-1">
+                <label for="Note">{{
+                  "HEADER.CONTENT.NOTES" | translate
+                  }}</label>
+                <textarea id="Note" class="form-control" rows="3" formControlName="Note">
+                </textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" [disabled]="formSubmit" class="btn btn-primary w-md">
+            {{ "HEADER.CONTENT.SAVE" | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+
+  <ng-template #historyModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">
+        {{ "HEADER.CONTENT.HISTORY" | translate }}
+      </h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-hidden="true"></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <ngx-simplebar style="height: 280px">
+            <ul class="verti-timeline list-unstyled">
+              <li class="event-list" *ngFor="let item of dataList; let i = index; trackBy: trackByFn">
+                <div class="event-timeline-dot">
+                  <i class="bx bx-right-arrow-circle font-size-18"></i>
+                </div>
+                <div class="media">
+                  <!-- <div class="me-3"> -->
+                  <h5 class="font-size-14">
+                    {{ item.DateAffected | date: "dd/MM/yyyy" }}
+                    <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i>
+                  </h5>
+                  <!-- </div> -->
+                  <div class="media-body">
+                    <div>
+                      <h5 class="font-size-14">
+                        {{ item.MasterJobTitle }}
+                      </h5>
+                    </div>
+                    <div>
+                      <h5 class="font-size-14">
+                        {{ item.Note }}
+                      </h5>
+                    </div>
+                  </div>
+                  <a class="btn btn-rounded btn-sm btn-danger" href="javascript:void(0)"
+                    ngbTooltip="{{ 'HEADER.CONTENT.REMOVE' | translate }}" (click)="removeHistory(item)"><i
+                      class="bx bx-x font-size-16 align-middle"></i></a>
+                </div>
+              </li>
+            </ul>
+          </ngx-simplebar>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

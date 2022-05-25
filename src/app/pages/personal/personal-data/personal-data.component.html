@@ -1,0 +1,799 @@
+<div class="container-fluid">
+  <app-page-title title="{{ 'HEADER.CONTENT.PERSONALDATA' | translate }}" [breadcrumbItems]="breadCrumbItems">
+  </app-page-title>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body bg-info bg-soft">
+          <div class="row">
+            <div class="col-sm-10">
+              <h4 class="card-title">Filter</h4>
+            </div>
+            <div class="col-sm-2 text-sm-end">
+              <div class="button-items">
+                <button type="button" class="btn btn-outline-info btn-sm" (click)="isCollapsed = !isCollapsed">
+                  <i class="bx bx-filter font-size-16"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="collapse" id="collapseExample" [ngbCollapse]="isCollapsed">
+            <div class="bg-info bg-soft mb-0">
+              <app-personal-data-filter (outParams)="getParams($event)"></app-personal-data-filter>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="text-sm-end" *ngIf="dataList.length > 0">
+            <button type="button" class="btn btn-primary" (click)="print()" [useExistingCss]="true"
+              printTitle="Print Title" printSectionId="printableArea" ngxPrint>
+              <i class="bx bx bxs-printer font-size-16 align-middle me-2"></i>
+              {{ "HEADER.CONTENT.PRINT" | translate }}
+            </button>
+          </div>
+
+          <br />
+          <br />
+
+          <div class="row">
+            <div class="col-sm-12 text-sm-end">
+              <button type="button" class="btn btn-success btn-rounded mb-2 me-2" data-target="#dataModal"
+                data-toggle="modal" (click)="openModal(dataModal)">
+                <i class="fas fa-plus font-size-64 align-left mr-1"></i>
+                {{ "HEADER.CONTENT.ADDNEW" | translate }}
+              </button>
+            </div>
+          </div>
+
+          <!-- <p class="card-title-desc">
+            Add <code>.table-bordered</code> for borders on all sides of the
+            table and cells.
+          </p> -->
+
+          <div class="row">
+            <div id="printableArea">
+              <!-- <div class="col-sm-12">
+                <h4 class="card-title">
+                  {{ "HEADER.CONTENT.PERSONALDATA" | translate }}
+                </h4>
+              </div> -->
+
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-2">
+                    <img src="assets/images/MEW-logo1.png" alt="" height="100" />
+                  </div>
+                  <div class="col-sm-8">
+                    <h4 class="display-6 text-center">
+                      {{ "HEADER.CONTENT.PERSONALDATA" | translate }}
+                    </h4>
+                    <h4 class="display-7 text-center">
+                      {{ "HEADER.CONTENT.PRINTTIME" | translate }}:
+                      {{ printTime | date:'medium'}}
+                    </h4>
+                  </div>
+                  <div class="col-sm-2"></div>
+                </div>
+              </div>
+              <br />
+
+              <div class="col-sm-12">
+                <ngb-progressbar *ngIf="isLoading" [value]="100" [striped]="true" [animated]="true" height="4px"
+                  type="info"></ngb-progressbar>
+              </div>
+
+              <div class="col-sm-12">
+                <div class="table-responsive">
+                  <table class="table table-bordered mb-0">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th style="width: 1%; white-space: nowrap">
+                          {{ "HEADER.CONTENT.FILENO" | translate }}
+                        </th>
+                        <th>{{ "HEADER.CONTENT.NAME" | translate }}</th>
+                        <th>{{ "HEADER.CONTENT.CIVILID" | translate }}</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of dataList; let i = index; trackBy: trackByFn">
+                        <td style="width: 1%; white-space: nowrap">
+                          <div class="avatar-xs">
+                            <span class="avatar-title rounded-circle">
+                              {{ i + 1 }}
+                            </span>
+                          </div>
+                        </td>
+                        <td>
+                          {{ item.FileNo }}
+                        </td>
+                        <td style="font-size: medium; font-weight: bold">
+                          {{ item.Name }}
+                        </td>
+                        <td style="width: 1%; white-space: nowrap">
+                          {{ item.CivilIdNo }}
+                        </td>
+                        <!-- <td style="font-size: medium; font-weight: bold">
+                    {{ item.EndValue }}
+                  </td> -->
+                        <td style="width: 1%; white-space: nowrap">
+                          <div class="text-sm-end">
+                            <ul class="list-inline font-size-15 contact-links mb-0">
+                              <li class="list-inline-item px-2">
+                                <a href="javascript:void(0)" ngbTooltip="{{
+                                    'HEADER.CONTENT.EDIT' | translate
+                                  }}" (click)="openEditModal(dataModal, item)"><i class="bx bx-pencil"></i></a>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #dataModal let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title mt-0">
+          {{ "HEADER.CONTENT.PERSONALDATA" | translate }}
+        </h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-hidden="true"></button>
+      </div>
+      <div class="modal-body">
+        <form autocomplete="off" class="form-horizontal" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-5">
+                <div class="mb-1">
+                  <label for="Name"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.NAME" | translate
+                    }}</label>
+                  <input type="text" class="form-control form-control-sm" id="Name" formControlName="Name" [ngClass]="{
+                      'is-invalid': formSubmit && f.Name.errors
+                    }" />
+                  <div *ngIf="formSubmit && f.Name.errors" class="invalid-feedback">
+                    <span *ngIf="f.Name.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="mb-1">
+                  <label for="FileNo"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.FILENO" | translate
+                    }}</label>
+                  <input type="text" class="form-control form-control-sm" id="FileNo" maxlength="5"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                    formControlName="FileNo" [ngClass]="{
+                      'is-invalid': formSubmit && f.FileNo.errors
+                    }" />
+                  <div *ngIf="formSubmit && f.FileNo.errors" class="invalid-feedback">
+                    <span *ngIf="f.FileNo.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="mb-1">
+                  <label for="CivilIdNo"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.CIVILID" | translate
+                    }}</label>
+                  <input type="text" class="form-control form-control-sm" maxlength="12" id="CivilIdNo" maxlength="12"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                    formControlName="CivilIdNo" [ngClass]="{
+                      'is-invalid': formSubmit && f.CivilIdNo.errors
+                    }" />
+                  <div *ngIf="formSubmit && f.CivilIdNo.errors" class="invalid-feedback">
+                    <span *ngIf="f.CivilIdNo.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="mb-1">
+                  <label for="ArticleNo">{{
+                    "HEADER.CONTENT.ARTICLENO" | translate
+                    }}</label>
+                  <input type="text" class="form-control form-control-sm" id="ArticleNo" formControlName="ArticleNo"
+                    [ngClass]="{
+                      'is-invalid': formSubmit && f.ArticleNo.errors
+                    }" />
+                  <div *ngIf="formSubmit && f.ArticleNo.errors" class="invalid-feedback">
+                    <span *ngIf="f.ArticleNo.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+              <div class="col-md-3">
+                <div class="mb-1">
+                  <label for="PhoneNo">{{
+                    "HEADER.CONTENT.PHONENO" | translate
+                    }}</label>
+                  <input type="text" class="form-control form-control-sm" id="PhoneNo" maxlength="8"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                    formControlName="PhoneNo" [ngClass]="{
+                      'is-invalid': formSubmit && f.PhoneNo.errors
+                    }" />
+                  <div *ngIf="formSubmit && f.PhoneNo.errors" class="invalid-feedback">
+                    <span *ngIf="f.PhoneNo.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="mb-1">
+                  <label for="DateBirth">{{
+                    "HEADER.CONTENT.DATEOFBIRTH" | translate
+                    }}</label>
+                  <input type="date" class="form-control form-control-sm" id="DateBirth" formControlName="DateBirth"
+                    [ngClass]="{
+                      'is-invalid': formSubmit && f.DateBirth.errors
+                    }" />
+                  <div *ngIf="formSubmit && f.DateBirth.errors" class="invalid-feedback">
+                    <span *ngIf="f.DateBirth.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="mb-1">
+                  <label for="DateJoin">{{
+                    "HEADER.CONTENT.DATEOFJOIN" | translate
+                    }}</label>
+                  <input type="date" class="form-control form-control-sm" id="DateJoin" name="DateJoin"
+                    formControlName="DateJoin" [ngClass]="{
+                      'is-invalid': formSubmit && f.DateJoin.errors
+                    }" />
+                  <div *ngIf="formSubmit && f.DateJoin.errors" class="invalid-feedback">
+                    <span *ngIf="f.DateJoin.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="mb-1">
+                  <label for="Gender"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.GENDER" | translate
+                    }}</label>
+
+                  <ng-select formControlName="GenderId" (click)="fetchMasterData(22)"
+                    (change)="changeMasterData(22, $event)">
+                    <ng-option *ngFor="let row of masterDataList.genderList; trackBy: trackByFn" [value]="row.Id">{{
+                      row.ArabicDescription
+                      }}</ng-option>
+                  </ng-select>
+                  <div *ngIf="formSubmit && f.GenderId.errors" class="invalid-feedback">
+                    <span *ngIf="f.GenderId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+              <div class="col-md-3">
+                <div class="mb-1">
+                  <label>{{ "HEADER.CONTENT.DUTYTYPE" | translate }}</label>
+
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="form-check mb-1">
+                        <input class="form-check-input form-radio-success" type="radio" name="formRadios" id="rdoBasic"
+                          [checked]="_rdoBasic" checked />
+                        <label style="padding-left: 10px" class="form-check-label" for="rdoBasic">
+                          {{ "HEADER.CONTENT.BASIC" | translate }}
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-check">
+                        <input class="form-check-input form-radio-success" type="radio" name="formRadios" id="rdoShift"
+                          [checked]="_rdoShift" />
+
+                        <label style="padding-left: 10px" class="form-check-label" for="rdoShift">
+                          {{ "HEADER.CONTENT.SHIFT" | translate }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-1">
+                  <label>{{ "HEADER.CONTENT.OTHEROPTIONS" | translate }}</label>
+
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <div class="form-check form-check-success mb-1">
+                        <input class="form-check-input" type="checkbox" id="AdvHousing" [checked]="_AdvHousing" />
+                        <label class="form-check-label" for="AdvHousing">
+                          {{ "HEADER.CONTENT.HOUSINGALLOWANCE" | translate }}
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-check form-check-success mb-1">
+                        <input class="form-check-input" type="checkbox" id="AdvMobile" [checked]="_AdvMobile" />
+                        <label class="form-check-label" for="AdvMobile">
+                          {{ "HEADER.CONTENT.MOBILEALLOWANCE" | translate }}
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-check form-check-success mb-1">
+                        <input class="form-check-input" type="checkbox" id="AdvVehicle" [checked]="_AdvVehicle" />
+                        <label class="form-check-label" for="AdvVehicle">
+                          {{ "HEADER.CONTENT.VEHICLEALLOWANCE" | translate }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="mb-1">
+                  <label>{{
+                    "HEADER.CONTENT.INSIDEBUILDING" | translate
+                    }}</label>
+
+                  <div class="form-check form-check-success mb-1">
+                    <input class="form-check-input" type="checkbox" id="InsideBuilding" [checked]="_InsideBuilding"
+                      checked />
+                    <label class="form-check-label" for="InsideBuilding">
+                      {{ "HEADER.CONTENT.INSIDEBUILDING" | translate }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="department"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.DEPARTMENT" | translate
+                    }}</label>
+
+                  <ng-select id="department" formControlName="MasterDepartmentId" (click)="fetchMasterData(12)"
+                    (change)="changeMasterData(12, $event)">
+                    <ng-option *ngFor="let row of masterDataList.departmentList; trackBy: trackByFn" [value]="row.Id">{{
+                      row.Description }}
+                    </ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.MasterDepartmentId.errors" class="invalid-feedback">
+                    <span *ngIf="f.MasterDepartmentId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label>{{ "HEADER.CONTENT.SECTOR" | translate }}</label>
+                  <br />
+                  <label style="font-size: medium; font-weight: bold">{{
+                    personalDataParams.selectedSector
+                    }}</label>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label>{{ "HEADER.CONTENT.PROGRAM" | translate }}</label>
+                  <br />
+                  <label style="font-size: medium; font-weight: bold">{{
+                    personalDataParams.selectedProgram
+                    }}</label>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="MasterFunctionalGroupId"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.FUNCTIONALGROUP" | translate
+                    }}</label>
+
+                  <ng-select formControlName="MasterFunctionalGroupId" (click)="fetchMasterData(4)"
+                    (change)="changeMasterData(4, $event)">
+                    <ng-option *ngFor="let row of masterDataList.functionalGroupList; trackBy: trackByFn"
+                      [value]="row.Id">{{
+                      row.Description }}</ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.MasterFunctionalGroupId.errors" class="invalid-feedback">
+                    <span *ngIf="f.MasterFunctionalGroupId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="MasterJobTitleId"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.JOBTITLE" | translate
+                    }}</label>
+
+                  <ng-select formControlName="MasterJobTitleId">
+                    <ng-option *ngFor="let row of masterDataList.jobTitleList; trackBy: trackByFn" [value]="row.Id">{{
+                      row.Description }}
+                    </ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.MasterJobTitleId.errors" class="invalid-feedback">
+                    <span *ngIf="f.MasterJobTitleId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="MasterJobLevelId"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.JOBLEVEL" | translate
+                    }}</label>
+
+                  <ng-select formControlName="MasterJobLevelId">
+                    <ng-option *ngFor="let row of masterDataList.jobLevelList; trackBy: trackByFn" [value]="row.Id">{{
+                      row.Description }}
+                    </ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.MasterJobLevelId.errors" class="invalid-feedback">
+                    <span *ngIf="f.MasterJobLevelId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="MasterJobDescriptionId"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.JOBDESCRIPTION" | translate
+                    }}</label>
+
+                  <ng-select formControlName="MasterJobDescriptionId" (click)="fetchMasterData(9)"
+                    (change)="changeMasterData(9, $event)">
+                    <ng-option *ngFor="let row of masterDataList.jobDescriptionList; trackBy: trackByFn"
+                      [value]="row.Id">{{ row.Description
+                      }}</ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.MasterJobDescriptionId.errors" class="invalid-feedback">
+                    <span *ngIf="f.MasterJobDescriptionId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="MasterDesignationId"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.DESIGNATION" | translate
+                    }}</label>
+
+                  <ng-select formControlName="MasterDesignationId" (click)="fetchMasterData(6)"
+                    (change)="changeMasterData(6, $event)">
+                    <ng-option *ngFor="let row of masterDataList.designationList; trackBy: trackByFn" [value]="row.Id">
+                      {{ row.Description }}
+                    </ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.MasterDesignationId.errors" class="invalid-feedback">
+                    <span *ngIf="f.MasterDesignationId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="MasterJobDegreeId"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.JOBDEGREE" | translate
+                    }}</label>
+
+                  <ng-select formControlName="MasterJobDegreeId" (click)="fetchMasterData(1)"
+                    (change)="changeMasterData(1, $event)">
+                    <ng-option *ngFor="let row of masterDataList.jobDegreeList; trackBy: trackByFn" [value]="row.Id">{{
+                      row.Description }}
+                    </ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.MasterJobDegreeId.errors" class="invalid-feedback">
+                    <span *ngIf="f.MasterJobDegreeId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="MasterJobDegreeId">{{
+                    "HEADER.CONTENT.JOBDEGREE" | translate
+                  }}</label>
+
+                  <ng-select
+                    formControlName="MasterJobDegreeId"
+                    (click)="fetchMasterData(1)"
+                    (change)="changeMasterData(1, $event)"
+                  >
+                    <ng-option
+                      *ngFor="let row of masterDataList.jobDegreeList"
+                      [value]="row.Id"
+                      >{{ row.Description }}</ng-option
+                    >
+                  </ng-select>
+
+                  <div
+                    *ngIf="formSubmit && f.MasterJobDegreeId.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="f.MasterJobDegreeId.errors.required"
+                      >This field is required.</span
+                    >
+                  </div>
+                </div>
+              </div> -->
+            </div>
+
+            <hr />
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="NextJobLevelId">{{
+                    "HEADER.CONTENT.NEXTJOBLEVEL" | translate
+                    }}</label>
+
+                  <ng-select formControlName="NextJobLevelId" (click)="fetchMasterData(8)"
+                    (change)="changeMasterData(8, $event)">
+                    <ng-option *ngFor="let row of masterDataList.jobLevelList; trackBy: trackByFn" [value]="row.Id">{{
+                      row.Description }}
+                    </ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.NextJobLevelId.errors" class="invalid-feedback">
+                    <span *ngIf="f.NextJobLevelId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="MasterGradeId"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.CURRENTGRADE" | translate
+                    }}</label>
+
+                  <ng-select formControlName="MasterGradeId" (click)="fetchMasterData(2)"
+                    (change)="changeMasterData(2, $event)">
+                    <ng-option *ngFor="let row of masterDataList.gradeList; trackBy: trackByFn" [value]="row.Id">{{
+                      row.Description }}
+                    </ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.MasterGradeId.errors" class="invalid-feedback">
+                    <span *ngIf="f.MasterGradeId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="NextGradeId">{{
+                    "HEADER.CONTENT.NEXTGRADE" | translate
+                    }}</label>
+
+                  <ng-select formControlName="NextGradeId" (click)="fetchMasterData(2)"
+                    (change)="changeMasterData(2, $event)">
+                    <ng-option *ngFor="let row of masterDataList.gradeList; trackBy: trackByFn" [value]="row.Id">{{
+                      row.Description }}
+                    </ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.NextGradeId.errors" class="invalid-feedback">
+                    <span *ngIf="f.NextGradeId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="mb-1">
+                  <label for="NextJobLevelDate">{{
+                    "HEADER.CONTENT.NEXTJOBLEVELDATE" | translate
+                    }}</label>
+                  <input type="date" class="form-control form-control-sm" id="NextJobLevelDate"
+                    formControlName="NextJobLevelDate" [ngClass]="{
+                      'is-invalid': formSubmit && f.NextJobLevelDate.errors
+                    }" />
+                  <div *ngIf="formSubmit && f.NextJobLevelDate.errors" class="invalid-feedback">
+                    <span *ngIf="f.NextJobLevelDate.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="mb-1">
+                  <label for="CurrentGradeDate">{{
+                    "HEADER.CONTENT.CURRENTGRADEDATE" | translate
+                    }}</label>
+                  <input type="date" class="form-control form-control-sm" id="CurrentGradeDate"
+                    formControlName="CurrentGradeDate" [ngClass]="{
+                      'is-invalid': formSubmit && f.CurrentGradeDate.errors
+                    }" />
+                  <div *ngIf="formSubmit && f.CurrentGradeDate.errors" class="invalid-feedback">
+                    <span *ngIf="f.CurrentGradeDate.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="mb-1">
+                  <label for="NextGradeDate">{{
+                    "HEADER.CONTENT.NEXTGRADEDATE" | translate
+                    }}</label>
+                  <input type="date" class="form-control form-control-sm" id="NextGradeDate"
+                    formControlName="NextGradeDate" [ngClass]="{
+                      'is-invalid': formSubmit && f.NextGradeDate.errors
+                    }" />
+                  <div *ngIf="formSubmit && f.NextGradeDate.errors" class="invalid-feedback">
+                    <span *ngIf="f.NextGradeDate.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-1">
+                <div class="mb-1">
+                  <label for="CurrentNoOfAllowances">{{
+                    "HEADER.CONTENT.ALLOWANCE" | translate
+                    }}</label>
+                  <input type="text"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                    class="form-control form-control-sm" id="CurrentNoOfAllowances"
+                    formControlName="CurrentNoOfAllowances" [ngClass]="{
+                      'is-invalid': formSubmit && f.CurrentNoOfAllowances.errors
+                    }" />
+                  <div *ngIf="formSubmit && f.CurrentNoOfAllowances.errors" class="invalid-feedback">
+                    <span *ngIf="f.CurrentNoOfAllowances.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-1">
+                <div class="mb-1">
+                  <label for="NextNoOfAllowances">{{
+                    "HEADER.CONTENT.NEXTALLOWANCE" | translate
+                    }}</label>
+                  <input type="text"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                    class="form-control form-control-sm" id="NextNoOfAllowances" formControlName="NextNoOfAllowances"
+                    [ngClass]="{
+                      'is-invalid': formSubmit && f.NextNoOfAllowances.errors
+                    }" />
+                  <div *ngIf="formSubmit && f.NextNoOfAllowances.errors" class="invalid-feedback">
+                    <span *ngIf="f.NextNoOfAllowances.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="MasterBudgetTypeId"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.BUDGETTYPE" | translate
+                    }}</label>
+
+                  <ng-select formControlName="MasterBudgetTypeId" (click)="fetchMasterData(5)"
+                    (change)="changeMasterData(5, $event)">
+                    <ng-option *ngFor="let row of masterDataList.budgetTypeList; trackBy: trackByFn" [value]="row.Id">{{
+                      row.Description }}
+                    </ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.MasterBudgetTypeId.errors" class="invalid-feedback">
+                    <span *ngIf="f.MasterBudgetTypeId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+              <div class="col-md-1">
+                <div class="form-check form-check-success mb-1">
+                  <input class="form-check-input" type="checkbox" id="retired" [checked]="_IsRetired"
+                    (change)="detectCheckValue($event.target.checked)" />
+                  <label class="form-check-label" for="retired">
+                    {{ "HEADER.CONTENT.RETIRED" | translate }}
+                  </label>
+                </div>
+              </div>
+
+              <div class="col-md-7">
+                <div class="mb-1" *ngIf="showRetirementReason">
+                  <label for="MasterReasonForRetirementId">{{
+                    "HEADER.CONTENT.REASONFORRETIREMENT" | translate
+                    }}</label>
+
+                  <ng-select formControlName="MasterReasonForRetirementId" (click)="fetchMasterData(17)"
+                    (change)="changeMasterData(17, $event)">
+                    <ng-option *ngFor="let row of masterDataList.reasonForRetirementList; trackBy: trackByFn"
+                      [value]="row.Id">{{
+                      row.Description }}</ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.MasterReasonForRetirementId.errors" class="invalid-feedback">
+                    <span *ngIf="f.MasterReasonForRetirementId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-1">
+                  <label for="MasterNationalityId"><span class="text-danger">*</span>{{
+                    "HEADER.CONTENT.NATIONALITY" | translate
+                    }}</label>
+
+                  <ng-select formControlName="MasterNationalityId" (click)="fetchMasterData(16)"
+                    (change)="changeMasterData(16, $event)">
+                    <ng-option *ngFor="let row of masterDataList.nationalityList; trackBy: trackByFn" [value]="row.Id">
+                      {{ row.Description }}
+                    </ng-option>
+                  </ng-select>
+
+                  <div *ngIf="formSubmit && f.MasterNationalityId.errors" class="invalid-feedback">
+                    <span *ngIf="f.MasterNationalityId.errors.required">This field is required.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="mb-1">
+                  <label for="Notes">{{
+                    "HEADER.CONTENT.NOTES" | translate
+                    }}</label>
+
+                  <textarea class="form-control" rows="5" formControlName="Notes">
+                  </textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <div class="text-sm">
+              <button type="button" class="btn btn-outline-success">
+                {{ "HEADER.CONTENT.VERIFY" | translate }}
+              </button>
+            </div>
+            <button type="submit" [disabled]="formSubmit" class="btn btn-primary w-md">
+              {{ "HEADER.CONTENT.SAVE" | translate }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </ng-template>
+  </div>
+</div>
